@@ -29,12 +29,11 @@ function App() {
       field: 'age',
       headerName: 'Age',
       type: 'number',
-      width: 90,
+
     },
     {
       field: 'fullName',
       headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
       sortable: false,
       valueGetter: (params:any) =>
         `${params.firstName ? params.firstName :"" } ${params.lastName ? params.lastName :"" }`,
