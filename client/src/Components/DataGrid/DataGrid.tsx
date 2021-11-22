@@ -1,5 +1,5 @@
+import { Pagination, Tooltip } from '@mui/material';
 import React, { Component } from 'react';
-import { TablePagination, Tooltip } from '@mui/material';
 
 import Cell from './Cell/Cell';
 import styled from 'styled-components';
@@ -67,7 +67,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
         this.state = {
             sortedField: "",
             currentOrder: 1,
-            page: 0,
+            page: 1,
             pageSize: initialPageSize ? initialPageSize : 10,
             tableData: data
         }
@@ -142,42 +142,41 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
             }</Tr>;
     }
-    handlePageChange = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    handlePageChange = (event:  React.ChangeEvent<unknown> , newPage: number) => {
         this.setState({ page: newPage });
         // feed the presented array
     }
-    handleChangePageSize = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        this.setState({ page: 0, pageSize: parseInt(event.target.value) });
-
-    }
+   
     renderFooter = () => {
         const { data } = this.props;
         const { page, pageSize } = this.state;
         const count = Math.ceil(data.length / pageSize);
 
-        return <TablePagination
-            component="div"
+        return <Pagination
             page={page}
             count={count}
-            rowsPerPage={pageSize}
-            onPageChange={this.handlePageChange}
-            onRowsPerPageChange={this.handleChangePageSize} />;
+            onChange={this.handlePageChange}
+            />;
     }
     render() {
         const { headers } = this.props;
-        const { tableData } = this.state;
+        const { tableData ,page , pageSize} = this.state;
+       
+        const startIndex = ((page -1) * pageSize) ;
+
         this.renderHeaderCells = this.renderHeaderCells.bind(this);
         this.renderRow = this.renderRow.bind(this);
+        this.renderFooter = this.renderFooter.bind(this);
 
         const header = (<Tr>{headers ? headers.map(this.renderHeaderCells) : this.getHeadersFromData().map(this.renderHeaderCells)}</Tr>);
-        const body = tableData.map(this.renderRow);
+        const body = tableData.slice(startIndex,page*pageSize).map(this.renderRow);
         const footer = this.renderFooter();
         return (
             <DataGridContainer>
                 <Table>
                     <thead>{header}</thead>
                     <tbody>{body}</tbody>
-                    {footer}
+                    <tfoot>{footer}</tfoot>
                 </Table>
 
             </DataGridContainer>
