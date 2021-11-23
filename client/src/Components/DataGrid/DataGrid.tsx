@@ -30,35 +30,45 @@ interface DataGridState {
 
 
 const Tr = styled.tr`
+display:flex;
+
 `;
 const Th = styled.th`
     border: 1px solid #734e5f;
     background-color: #ae7d90;
-    padding: 4px;
     color:#f4f6f8;
-    text-align: left;
+    flex:1;
+    text-align: center;
+    white-space: nowrap;
+    position: relative;
+    padding: 8px 10px;
+
+
 `;
 
 const Table = styled.table`
     border-spacing: 0px;
     background: #fff;
     box-shadow: 0 1px 0 0 rgba(22, 29, 37, 0.05);
+    table-layout: auto;
     width: 100%;
+    overflow: auto; 
+    display: grid;
 `;
 const DataGridContainer = styled.div`
 max-width: 100vw;`;
 
-const sorter = (a:any,b:any):number => {
+const sorter = (a: any, b: any): number => {
     if (a === b) {
         return 0;
-     }
-     else if (a === null) {
+    }
+    else if (a === null) {
         return 1;
-     } else if (b === null) {
+    } else if (b === null) {
         return -1;
-     }else  {
+    } else {
         return a < b ? -1 : 1;
-     }
+    }
 }
 export default class DataGrid extends Component<DataGridProps, DataGridState> {
     constructor(props: DataGridProps) {
@@ -75,10 +85,10 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     sort = (field: string) => {
         const { tableData, sortedField } = this.state;
         const { data } = this.props;
-      
+
         const newData = field === sortedField ?
             tableData.reverse()
-            : data.sort((a: any, b: any) => sorter(a[field],b[field]))
+            : data.sort((a: any, b: any) => sorter(a[field], b[field]))
             ;
 
         this.setState({
@@ -87,6 +97,10 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
         });
 
     }
+    handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+        this.setState({ page: newPage });
+    }
+
     getHeadersFromData = (): Header[] => {
         // if a headers prop has not been assigned, one is generated from the first object of the data array
         const headers: Header[] = [];
@@ -142,11 +156,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
             }</Tr>;
     }
-    handlePageChange = (event:  React.ChangeEvent<unknown> , newPage: number) => {
-        this.setState({ page: newPage });
-        // feed the presented array
-    }
-   
+
     renderFooter = () => {
         const { data } = this.props;
         const { page, pageSize } = this.state;
@@ -156,29 +166,29 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             page={page}
             count={count}
             onChange={this.handlePageChange}
-            />;
+        />;
     }
     render() {
         const { headers } = this.props;
-        const { tableData ,page , pageSize} = this.state;
-       
-        const startIndex = ((page -1) * pageSize) ;
+        const { tableData, page, pageSize } = this.state;
+
+        const startIndex = ((page - 1) * pageSize);
 
         this.renderHeaderCells = this.renderHeaderCells.bind(this);
         this.renderRow = this.renderRow.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
 
         const header = (<Tr>{headers ? headers.map(this.renderHeaderCells) : this.getHeadersFromData().map(this.renderHeaderCells)}</Tr>);
-        const body = tableData.slice(startIndex,page*pageSize).map(this.renderRow);
+        const body = tableData.slice(startIndex, page * pageSize).map(this.renderRow);
         const footer = this.renderFooter();
         return (
             <DataGridContainer>
                 <Table>
                     <thead>{header}</thead>
                     <tbody>{body}</tbody>
-                    <tfoot>{footer}</tfoot>
-                </Table>
 
+                </Table>
+                {footer}
             </DataGridContainer>
         )
     }

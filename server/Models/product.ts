@@ -10,6 +10,7 @@ const p = path.join(
   "inventory.json"
 
 );
+
 /**
  * Gets the product array from the file and passes it in the callback function
  * 
@@ -30,7 +31,7 @@ const getProductsFromFile = (cb: (products: Product[]) => void): void => {
 
 
 export abstract class Product {
- 
+
 
 
   readonly id: string = uid();
@@ -48,26 +49,13 @@ export abstract class Product {
 
 
   }
-  /**
-   * 
-   * @returns the Product specifications as a readable string
-   */
-  getSpecs(): string {
-    let { title, description, price, category, ...specifications } = this;
-    const { startCase } = lodash;
-    console.log(specifications);
-    let specsToString = "";
-    for (const [key, value] of Object.entries(specifications)) {
-      specsToString += `${startCase(key)}: ${value}\n`;
-    }
-    return specsToString;
-  }
+
   /**
    * Saves the current instance to the inventory
    */
   save(): void {
 
-    getProductsFromFile((products) => {
+    getProductsFromFile((products: Product[]) => {
 
       products.push(this);
 
@@ -77,6 +65,59 @@ export abstract class Product {
         }
       });
     });
+  }
+  /**
+ * 
+ * @returns the Product specifications as a readable string
+ */
+  static getSpecs(product: Product): string {
+    let { title, description, price, category, ...specifications } = product;
+    const { startCase } = lodash;
+    console.log(specifications);
+    let specsToString = "";
+    for (const [key, value] of Object.entries(specifications)) {
+      specsToString += `${startCase(key)}: ${value}\n`;
+    }
+    return specsToString;
+  }
+
+  /**
+   * Method that updates a product from the inventory
+   * @param newProduct 
+   */
+  static edit(newProduct: Product):void {
+    getProductsFromFile((products: Product[]) => {
+
+      const productIndex = products.findIndex((product: Product) => product.id === newProduct.id);
+
+      products[productIndex] = newProduct;
+
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
+  }
+
+  /**
+   * Method that deletes a product from the inventory by using the id
+   * @param id 
+   */
+  static delete(id: string): void {
+    getProductsFromFile((products:Product[]) => {
+
+      products = products.filter(function (product: Product) {
+        return product.id !== id;
+      });
+
+      fs.writeFile(p, JSON.stringify(products), (err) => {
+        if (err) {
+          console.log(err);
+        }
+      });
+    });
+
   }
   /**
    * Method that calls the helper function getProductFromFile 

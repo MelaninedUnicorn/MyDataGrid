@@ -1,0 +1,14 @@
+{
+  "name": "my-data-grid-shared",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"cd server && npm run start:dev \" \"cd client && npm start \""
+  },
+  "author": "Mugisha J. Kakou",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.4.0"
+  }
+}

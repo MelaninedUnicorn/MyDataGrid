@@ -2,11 +2,9 @@ import './App.css';
 
 import * as React from 'react';
 
-import { Col, Grid, Row } from './Components/Grid/Grid';
 import { useEffect, useState } from 'react';
 
 import DataGrid from './Components/DataGrid/DataGrid';
-import { Product } from '../../server/Models/product';
 import { getInventory } from './Services/inventory.services';
 
 function App() {
