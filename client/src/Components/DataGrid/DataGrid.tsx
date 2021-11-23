@@ -56,7 +56,9 @@ const Table = styled.table`
     display: grid;
 `;
 const DataGridContainer = styled.div`
-max-width: 100vw;`;
+max-width: 100vw;
+align-content:center;`;
+
 
 const sorter = (a: any, b: any): number => {
     if (a === b) {
@@ -116,12 +118,14 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
         const notSortable = _cell.sortable === false;
 
         if (notSortable) {
-            return (<Tooltip key={`header-${_cell.field}`} title="This column cannot be sorted">
-                <Th
-                    key={`header-${_cell.field}`}
-                >
-                    {_cell.headerName}
-                </Th></Tooltip>);
+            return (
+                <Tooltip key={`header-${_cell.field}`} title="This column cannot be sorted">
+                    <Th
+                        key={`header-${_cell.field}`}
+                    >
+                        {_cell.headerName}
+                    </Th>
+                </Tooltip>);
         } else {
             return (<Th
                 key={`header-${_cell.field}`}

@@ -32,8 +32,6 @@ const getProductsFromFile = (cb: (products: Product[]) => void): void => {
 
 export abstract class Product {
 
-
-
   readonly id: string = uid();
   title: string;
   description: string;
@@ -61,11 +59,13 @@ export abstract class Product {
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         if (err) {
-          console.log(err);
+          throw new Error(err.message);
+          
         }
       });
     });
   }
+  
   /**
  * 
  * @returns the Product specifications as a readable string
@@ -94,7 +94,7 @@ export abstract class Product {
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         if (err) {
-          console.log(err);
+          throw new Error(err.message);
         }
       });
     });
@@ -113,7 +113,7 @@ export abstract class Product {
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         if (err) {
-          console.log(err);
+          throw new Error(err.message);
         }
       });
     });
