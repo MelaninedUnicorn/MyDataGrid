@@ -15,7 +15,7 @@ function App() {
       <Grid item>
         <Typography variant={"h4"} align="center">Mugisha's Product Data Grid</Typography>
         <Typography align="center">
-          Feel free to deleted or add products to the inventory using the forms under the data grid!
+          Feel free to delete or add products to the inventory using the forms under the data grid!
         </Typography>
       </Grid>
       <Grid item><MyProductDataGrid /></Grid>

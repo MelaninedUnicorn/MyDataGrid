@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "concurrently \"cd server && npm run start:dev \" \"cd client && npm start \""
+    "start": "concurrently \"cd server && npm run start:dev \" \"cd client && npm start \"",
+    "setup": "npm install && cd server && npm install && cd .. && cd client && npm install "
   },
   "author": "Mugisha J. Kakou",
   "license": "ISC",

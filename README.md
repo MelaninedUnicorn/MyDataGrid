@@ -10,7 +10,7 @@
 
 <!-- ABOUT THE PROJECT -->
 ## About The Project
-Mugisha's attempt at making a reusable data grid component.
+Mugisha's attempt at making a re-usable data grid component.
 
 ### Requirements
 
@@ -77,10 +77,10 @@ To get a local copy up and running follow these simple example steps.
 <!-- ROADMAP -->
 ## Roadmap
 
-- [x] The datagrid component accepts an array of objects and displays them in a sortable table. 
+- [x] The data grid component accepts an array of objects and displays them in a sortable table. 
 - [x] If no header prop is passed on,the object keys are used as column title. 
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -88,12 +88,12 @@ See the [open issues](https://github.com/github_username/repo_name/issues) for a
 ## Full implementation
 This implementation is not complete. Here are a few things I would add to this project.
 
-- [] withLoading HOC
-- [] withInventory HOC : If I wanted to display the data in different ways this would be a good addition.
-- [] fully implement redux methods to add to the inventory
-- [] The delete function would no only be in the state but would call the deleteProductRequest() prop that would be passed on as a "deleteEntry" function in the Data Grid component
+- withLoading HOC
+- withInventory HOC : If I wanted to display the data in different ways this would be a good addition.
+- fully implement redux to add Products to the inventory
+- The delete function would no only be in the state but would call the deleteProductRequest() prop that would be passed on as a "deleteEntry" function in the Data Grid component
 
-See the [open issues](https://github.com/github_username/repo_name/issues) for a full list of proposed features (and known issues).
+See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
