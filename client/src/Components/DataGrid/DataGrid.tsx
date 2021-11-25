@@ -74,13 +74,12 @@ const Td = styled.td`
 
 }
     border: 1px solid #f4f6f8;
-    padding: 14px 20px;
+    padding: 12px 20px;
     text-align: left;
     white-space: nowrap;
-    // text-overflow: ellipsis;
     overflow:hidden;
     white-space:nowrap;
-    // max-width:40vw;
+   
    
   
 `;
