@@ -14,12 +14,10 @@ app.use(loggerMiddleware);
 
 app.get('/inventory', InventoryController.getAllProducts);
 
-app.delete('/inventory',InventoryController.deleteProduct);
+app.delete('/inventory', InventoryController.deleteProduct);
 
-app.post('/inventory');
+app.post('/addComputer', InventoryController.addComputer);
 
-app.post('/addComputer',InventoryController.addComputer);
-
-app.post('/addJewel');
+app.post('/addJewel', InventoryController.addJewelry);
 
 export default app;

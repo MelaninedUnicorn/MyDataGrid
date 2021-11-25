@@ -1,19 +1,22 @@
-import { Product } from '../../../server/Models/product';
-import Swal from 'sweetalert2';
+import { Product } from '../../../../server/Models/product';
 
 /**
  * Service function that makes a get request to 
  * the api to get the inventory
  * @returns the body if no error occurred
  */
-const getInventory = async (): Promise<any> => {
+const getInventory = async (): Promise<Product[]> => {
+
   const response = await fetch('/inventory', { method: 'GET' });
   const body = await response.json();
-
   if (response.status !== 200) {
-    throw Error(body.message)
+    throw new Error(body.message);
+  } else {
+
+    return body.inventory;
   }
-  return body;
+
+
 }
 
 
@@ -26,18 +29,9 @@ const deleteProduct = async (id: string): Promise<any> => {
   const response = await fetch('/inventory', { method: 'DELETE', body: JSON.stringify(id) });
   const body = await response.json();
   if (response.status !== 200) {
-    Swal.fire(
-      'Error',
-      body.message,
-      'error'
-    );
-
+    throw new Error(body.message);
   } else {
-    Swal.fire(
-      'Deleted',
-      `The product ${id} has been successfully removed from the inventory.`,
-      'success'
-    );
+    return body;
   }
 }
 
@@ -51,18 +45,11 @@ const editProduct = async (product: Product): Promise<any> => {
   const body = await response.json();
 
   if (response.status !== 200) {
-    Swal.fire(
-      'Error',
-      body.message,
-      'error'
-    );
+    throw new Error(body.message);
+
 
   } else {
-    Swal.fire(
-      'Edited',
-      `${product.title} has been successfully modified.`,
-      'success'
-    );
+    return body;
   }
 }
 
@@ -72,27 +59,21 @@ const editProduct = async (product: Product): Promise<any> => {
  * @param jewel 
  */
 const addJewelry = async (jewel: { title: string, description: string, price: number, type: string, material: string }): Promise<any> => {
-  const response = await fetch('/addJewel', { 
-    method: 'POST', 
+  const response = await fetch('/addJewel', {
+    method: 'POST',
     headers: {
       'Content-type': 'application/json; charset=UTF-8'
     },
-    body: JSON.stringify(jewel) });
+    body: JSON.stringify(jewel)
+  });
   const body = await response.json();
 
   if (response.status !== 200) {
-    Swal.fire(
-      'Error',
-      body.message,
-      'error'
-    );
+    throw new Error(body.message);
+
 
   } else {
-    Swal.fire(
-      'Saved',
-      `${jewel.title} has been added to the inventory.`,
-      'success'
-    );
+    return body;
   }
 
 }
@@ -109,23 +90,17 @@ const addComputer = async (computer: { title: string, description: string, price
       'Content-type': 'application/json; charset=UTF-8'
     },
     body: JSON.stringify(computer),
-   
+
   });
   const body = await response.json();
 
   if (response.status !== 200) {
-    Swal.fire(
-      'Error',
-      body.message,
-      'error'
-    );
+    throw new Error(body.message);
+
 
   } else {
-    Swal.fire(
-      'Saved',
-      `${computer.title} has been added to the inventory.`,
-      'success'
-    );
+
+    return body;
   }
 
 }

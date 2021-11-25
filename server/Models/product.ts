@@ -55,17 +55,18 @@ export abstract class Product {
 
     getProductsFromFile((products: Product[]) => {
 
+
       products.push(this);
 
       fs.writeFile(p, JSON.stringify(products), (err) => {
         if (err) {
           throw new Error(err.message);
-          
+
         }
       });
     });
   }
-  
+
   /**
  * 
  * @returns the Product specifications as a readable string
@@ -73,7 +74,7 @@ export abstract class Product {
   static getSpecs(product: Product): string {
     let { title, description, price, category, ...specifications } = product;
     const { startCase } = lodash;
-    console.log(specifications);
+   
     let specsToString = "";
     for (const [key, value] of Object.entries(specifications)) {
       specsToString += `${startCase(key)}: ${value}\n`;
@@ -85,7 +86,7 @@ export abstract class Product {
    * Method that updates a product from the inventory
    * @param newProduct 
    */
-  static edit(newProduct: Product):void {
+  static edit(newProduct: Product): void {
     getProductsFromFile((products: Product[]) => {
 
       const productIndex = products.findIndex((product: Product) => product.id === newProduct.id);
@@ -105,7 +106,7 @@ export abstract class Product {
    * @param id 
    */
   static delete(id: string): void {
-    getProductsFromFile((products:Product[]) => {
+    getProductsFromFile((products: Product[]) => {
 
       products = products.filter(function (product: Product) {
         return product.id !== id;

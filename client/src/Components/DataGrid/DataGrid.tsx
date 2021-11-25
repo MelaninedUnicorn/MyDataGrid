@@ -1,7 +1,7 @@
-import { Pagination, Tooltip } from '@mui/material';
+import { IconButton, Pagination, Tooltip } from '@mui/material';
 import React, { Component } from 'react';
 
-import Cell from './Cell/Cell';
+import DeleteIcon from '@mui/icons-material/Delete';
 import styled from 'styled-components';
 
 interface Header {
@@ -10,6 +10,7 @@ interface Header {
     sortable?: boolean;
     type?: string;
     valueGetter?(params: object): string;
+    deleteEntry?: string | object;
 }
 interface DataGridProps {
     headers?: Header[];
@@ -27,38 +28,101 @@ interface DataGridState {
     currentOrder: number;
 
 }
-
-
-const Tr = styled.tr`
-display:flex;
-
-`;
-const Th = styled.th`
-    border: 1px solid #734e5f;
-    background-color: #ae7d90;
-    color:#f4f6f8;
-    flex:1;
-    text-align: center;
-    white-space: nowrap;
-    position: relative;
-    padding: 8px 10px;
-
-
-`;
-
 const Table = styled.table`
     border-spacing: 0px;
     background: #fff;
     box-shadow: 0 1px 0 0 rgba(22, 29, 37, 0.05);
-    table-layout: auto;
     width: 100%;
-    overflow: auto; 
-    display: grid;
+    border-collapse: collapse; 
+    table-layout:auto;
+   
 `;
-const DataGridContainer = styled.div`
-max-width: 100vw;
-align-content:center;`;
 
+const Tr = styled.tr`
+
+&:nth-of-type(odd) { 
+    background: #dde; 
+  }
+
+`;
+
+const Th = styled.th`
+&:first-child{
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    color: #fff;
+}
+    border: 1px solid #fff;
+    background-color: #734e5f;
+    color:#f4f6f8;
+    text-align:left;
+    padding: 14px 20px;
+    
+
+
+`;
+const Td = styled.td`
+&:first-child{
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    background-color:  #734e5f;
+    color:#fff;
+    font-weight: bold; 
+
+
+}
+    border: 1px solid #f4f6f8;
+    padding: 14px 20px;
+    text-align: left;
+    white-space: nowrap;
+    // text-overflow: ellipsis;
+    overflow:hidden;
+    white-space:nowrap;
+    // max-width:40vw;
+   
+  
+`;
+
+
+
+
+
+
+const DataGridContainer = styled.div`
+width:100vw;
+overflow: scroll;
+
+/* width and height*/
+::-webkit-scrollbar {
+  width: 10px;
+  height:5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #965774;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #734e5f;
+}
+`;
+
+const FooterContainer = styled.div`
+display:flex;
+    justify-content: center;
+    width:100vw;
+ 
+   
+`;
 
 const sorter = (a: any, b: any): number => {
     if (a === b) {
@@ -95,7 +159,8 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
         this.setState({
             sortedField: field,
-            tableData: newData
+            tableData: newData,
+            page: 1
         });
 
     }
@@ -151,25 +216,46 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
                 const valueGetter = headers && headers.find((header) => header.field === fieldName)?.valueGetter;
                 const content = valueGetter ? valueGetter(_data) : _data[fieldName];
                 return (
-                    <Cell
-                        key={`row-${dataIndex}-${fieldName}`}
-                        content={content}
-                    />
+                    <Td key={`row-${dataIndex}-${fieldName}`}>
+                        {content}
+                    </Td>
                 )
             })
 
-            }</Tr>;
+            }
+            <Td>
+                <IconButton aria-label="delete" onClick={e => { this.deleteRow(_data) }}>
+                    <DeleteIcon />
+                </IconButton>
+            </Td>
+        </Tr>;
     }
 
+    deleteRow = (data: object) => {
+        /**
+         *For the demo this function deletes the product in the local state. 
+        The full implementation would obviously check if a deleteEntry function 
+        has been passed as a prop (in this case, the redux function 'deleteProductRequest')
+        and if none have been passed,just delete the entry in the local tableData state variable
+         */
+        const { tableData } = this.state;
+        this.setState({
+            tableData: tableData.filter(entry => entry !== data)
+        });
+    }
     renderFooter = () => {
-        const { data } = this.props;
-        const { page, pageSize } = this.state;
-        const count = Math.ceil(data.length / pageSize);
+
+        const { tableData, page, pageSize } = this.state;
+        const count = Math.ceil(tableData.length / pageSize);
 
         return <Pagination
             page={page}
             count={count}
             onChange={this.handlePageChange}
+            defaultPage={1}
+            variant={'outlined'}
+            size={"large"}
+
         />;
     }
     render() {
@@ -182,18 +268,21 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
         this.renderRow = this.renderRow.bind(this);
         this.renderFooter = this.renderFooter.bind(this);
 
-        const header = (<Tr>{headers ? headers.map(this.renderHeaderCells) : this.getHeadersFromData().map(this.renderHeaderCells)}</Tr>);
+        const header = (<Tr>{headers ? headers.map(this.renderHeaderCells) : this.getHeadersFromData().map(this.renderHeaderCells)}<Th>Action</Th></Tr>);
         const body = tableData.slice(startIndex, page * pageSize).map(this.renderRow);
         const footer = this.renderFooter();
         return (
-            <DataGridContainer>
-                <Table>
-                    <thead>{header}</thead>
-                    <tbody>{body}</tbody>
+            <>
+                <FooterContainer>{footer}</FooterContainer>
+                <DataGridContainer>
+                    <Table>
+                        <thead>{header}</thead>
+                        <tbody>{body}</tbody>
 
-                </Table>
-                {footer}
-            </DataGridContainer>
+                    </Table>
+                </DataGridContainer>
+            </>
+
         )
     }
 }
