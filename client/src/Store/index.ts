@@ -5,12 +5,14 @@ import { InventoryState } from './inventory/types';
 import thunk from 'redux-thunk';
 
 export interface ApplicationState {
-    inventory: InventoryState
+  inventory: InventoryState;
 }
 const store = createStore(
-    combineReducers({
-        inventory: InventoryReducer
-}),{},
-applyMiddleware(thunk));
+  combineReducers({
+    inventory: InventoryReducer
+  }),
+  {},
+  applyMiddleware(thunk)
+);
 
 export default store;

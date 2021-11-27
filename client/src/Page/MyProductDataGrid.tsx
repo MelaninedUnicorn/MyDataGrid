@@ -1,50 +1,43 @@
-import React, { useEffect } from "react";
-import { deleteProductRequest, fetchInventoryRequest } from "../Store/inventory/action";
+import { InventoryState, Product } from '../Store/inventory/types';
+import React, { useEffect } from 'react';
+import { deleteProductRequest, fetchInventoryRequest } from '../Store/inventory/action';
 
-import { AnyAction } from "redux";
-import { ApplicationState } from "../Store";
-import DataGrid from "../Components/DataGrid/DataGrid";
-import Loading from "../Components/Loading/Loading";
-import { Product } from "../Store/inventory/types";
-import { ThunkDispatch } from "redux-thunk";
-import { connect } from "react-redux";
-import lodash from "lodash";
+import { AnyAction } from 'redux';
+import { ApplicationState } from '../Store';
+import DataGrid from '../Components/DataGrid/DataGrid';
+import Loading from '../Components/Loading/Loading';
+import { ThunkDispatch } from 'redux-thunk';
+import { connect } from 'react-redux';
+import lodash from 'lodash';
 
-function MyProductDataGrid({
-  loading,
-  errors,
-  data,
-  fetchInventoryRequest,
-  ...props
-}: any) {
+function MyProductDataGrid({ loading, data, fetchInventoryRequest }: InventoryState) {
   useEffect(() => {
-    fetchInventoryRequest();
+    fetchInventoryRequest && fetchInventoryRequest();
   }, [fetchInventoryRequest]);
 
   const headers = [
-    { field: "id", headerName: "ID" },
-    { field: "title", headerName: "Title" },
-    { field: "category", headerName: "Category", },
-    { field: "price", headerName: "Price" },
+    { field: 'id', headerName: 'ID' },
+    { field: 'title', headerName: 'Title' },
+    { field: 'category', headerName: 'Category' },
+    { field: 'price', headerName: 'Price' },
     {
-      field: "specifications",
-      headerName: "Specifications",
+      field: 'specifications',
+      headerName: 'Specifications',
       sortable: false,
       valueGetter: (product: Product) => {
-        let { id, title, description, price, category, ...specifications } =
-          product;
+        // eslint-disable-next-line no-unused-vars
+        let { id, title, description, price, category, ...specifications } = product;
         const { startCase } = lodash;
 
-        let specsToString = "";
+        let specsToString = '';
         for (const [key, value] of Object.entries(specifications)) {
           specsToString += `-${startCase(key)}: ${value} \n `;
         }
         return specsToString;
-      },
+      }
     },
-    { field: "description", headerName: "Description" },
+    { field: 'description', headerName: 'Description' }
   ];
- 
 
   return loading ? <Loading /> : <DataGrid data={data} headers={headers} />;
 }
@@ -52,7 +45,7 @@ function MyProductDataGrid({
 const mapStateToProps = ({ inventory }: ApplicationState) => ({
   loading: inventory.loading,
   errors: inventory.error,
-  data: inventory.data,
+  data: inventory.data
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
@@ -62,7 +55,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     },
     deleteProductRequest: () => {
       dispatch(deleteProductRequest());
-    },
+    }
   };
 };
 

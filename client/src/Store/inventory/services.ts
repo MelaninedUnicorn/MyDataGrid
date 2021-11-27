@@ -1,27 +1,22 @@
 import { Product } from '../../../../server/Models/product';
 
 /**
- * Service function that makes a get request to 
+ * Service function that makes a get request to
  * the api to get the inventory
  * @returns the body if no error occurred
  */
 const getInventory = async (): Promise<Product[]> => {
-
   const response = await fetch('/inventory', { method: 'GET' });
   const body = await response.json();
   if (response.status !== 200) {
     throw new Error(body.message);
   } else {
-
     return body.inventory;
   }
-
-
-}
-
+};
 
 /**
- * Service function that makes a delete request to 
+ * Service function that makes a delete request to
  * the api to delete a product in the inventory
  * @param id
  */
@@ -33,10 +28,10 @@ const deleteProduct = async (id: string): Promise<any> => {
   } else {
     return body;
   }
-}
+};
 
 /**
- * Service function that makes a post request to 
+ * Service function that makes a post request to
  * the api to update a product in the inventory
  * @param product
  */
@@ -46,19 +41,23 @@ const editProduct = async (product: Product): Promise<any> => {
 
   if (response.status !== 200) {
     throw new Error(body.message);
-
-
   } else {
     return body;
   }
-}
+};
 
 /**
- * Service function that makes a post request to 
+ * Service function that makes a post request to
  * the api to add a new product of type jewel to the inventory
- * @param jewel 
+ * @param jewel
  */
-const addJewelry = async (jewel: { title: string, description: string, price: number, type: string, material: string }): Promise<any> => {
+const addJewelry = async (jewel: {
+  title: string;
+  description: string;
+  price: number;
+  type: string;
+  material: string;
+}): Promise<any> => {
   const response = await fetch('/addJewel', {
     method: 'POST',
     headers: {
@@ -70,44 +69,37 @@ const addJewelry = async (jewel: { title: string, description: string, price: nu
 
   if (response.status !== 200) {
     throw new Error(body.message);
-
-
   } else {
     return body;
   }
-
-}
+};
 
 /**
- * Service function that makes a post request to 
+ * Service function that makes a post request to
  * the api to add a new product of type computer to the inventory
- * @param computer 
+ * @param computer
  */
-const addComputer = async (computer: { title: string, description: string, price: number, brand: string, year: string, keyboardLayout: "qwerty" | "azerty" }): Promise<any> => {
+const addComputer = async (computer: {
+  title: string;
+  description: string;
+  price: number;
+  brand: string;
+  year: string;
+  keyboardLayout: 'qwerty' | 'azerty';
+}): Promise<any> => {
   const response = await fetch('/addComputer', {
     method: 'POST',
     headers: {
       'Content-type': 'application/json; charset=UTF-8'
     },
-    body: JSON.stringify(computer),
-
+    body: JSON.stringify(computer)
   });
   const body = await response.json();
 
   if (response.status !== 200) {
     throw new Error(body.message);
-
-
   } else {
-
     return body;
   }
-
-}
-export {
-  getInventory,
-  addComputer,
-  addJewelry,
-  deleteProduct,
-  editProduct
 };
+export { getInventory, addComputer, addJewelry, deleteProduct, editProduct };

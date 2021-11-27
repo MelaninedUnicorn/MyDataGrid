@@ -13,6 +13,11 @@ const getAllProducts = (req: Request, res: Response): void => {
     Product.fetchAll((products) => { res.status(200).send({ inventory: products }); });
 }
 
+/**
+ * This controller takes in the product id and deletes it from the inventory
+ * @param req 
+ * @param res 
+ */
 
 const deleteProduct = (req: Request, res: Response): void => {
     try {
@@ -22,6 +27,12 @@ const deleteProduct = (req: Request, res: Response): void => {
     }
 
 }
+
+/**
+ * This controller takes in the new computer data and adds a new product to the inventory
+ * @param req 
+ * @param res 
+ */
 
 const addComputer = (req: Request, res: Response): void => {
     const { title, description, price, brand, year, keyboardLayout } = req.body;
@@ -34,6 +45,13 @@ const addComputer = (req: Request, res: Response): void => {
     }
 
 }
+
+/**
+ * This controller takes in the new jewelry data and adds a new product to the inventory
+ * @param req 
+ * @param res 
+ */
+
 const addJewelry = (req: Request, res: Response): void => {
     const { title, description, price, type, material } = req.body;
     try {

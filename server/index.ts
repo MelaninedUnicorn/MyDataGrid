@@ -22,10 +22,13 @@ app.use(loggerMiddleware);
 
 //  security middlewares
 
+//information exposure
 app.use(helmet());
 
+// Cross-site  request forgery
 app.use(cookieParser())
-const csrfProtection = csrf({ cookie: { httpOnly: true, }})
+
+const csrfProtection = csrf({ cookie: { httpOnly: true, }});
 
 app.use(csrfProtection);
 

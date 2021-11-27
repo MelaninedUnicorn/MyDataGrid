@@ -12,10 +12,10 @@ import store from './Store';
 const theme = createTheme();
 ReactDOM.render(
   <Provider store={store}>
-      <ThemeProvider theme={theme}>
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
+    <ThemeProvider theme={theme}>
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
     </ThemeProvider>
   </Provider>,
   document.getElementById('root')
