@@ -13,6 +13,7 @@ const getAllProducts = (req: Request, res: Response): void => {
     Product.fetchAll((products) => { res.status(200).send({ inventory: products }); });
 }
 
+
 const deleteProduct = (req: Request, res: Response): void => {
     try {
         Product.delete(req.body);
