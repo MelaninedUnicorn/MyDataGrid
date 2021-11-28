@@ -207,7 +207,6 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     const { deleteEntry } = this.props;
 
     if (deleteEntry) {
-      console.log('a delete entry function was called');
       deleteEntry(dataEntry);
       this.setState({
         tableData: tableData.filter((entry) => entry !== dataEntry)

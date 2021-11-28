@@ -1,9 +1,20 @@
 import { Button, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
 
+import { AnyAction } from 'redux';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
-import { addJewelry } from '../../Store/inventory/services';
+import { ThunkDispatch } from 'redux-thunk';
+import { addJewelryRequest } from '../../Store/inventory/action';
+import { connect } from 'react-redux';
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+  return {
+    addJewelryRequest: (jewel: object) => {
+      dispatch(addJewelryRequest(jewel));
+    }
+  };
+};
 
 function JewelryForm() {
   const [title, setTitle] = useState<string>('');
@@ -12,14 +23,16 @@ function JewelryForm() {
   const [type, setType] = useState<string>('');
   const [material, setMaterial] = useState<string>('');
 
-  function onSubmit(): void {
-    addJewelry({ title, description, price, type, material }).then(() => {
-      setTitle('');
-      setDescription('');
-      setPrice(0);
-      setType('');
-      setMaterial('');
-    });
+  function onSubmit(event: React.FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+
+    addJewelryRequest({ title, description, price, type, material });
+
+    setTitle('');
+    setDescription('');
+    setPrice(0);
+    setType('');
+    setMaterial('');
   }
   return (
     <Box
@@ -101,4 +114,4 @@ function JewelryForm() {
   );
 }
 
-export default JewelryForm;
+export default connect(null, mapDispatchToProps)(JewelryForm);

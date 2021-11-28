@@ -1,8 +1,8 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { deleteProduct, getInventory } from './services';
+import { Computer, InventoryActionTypes, Jewelry } from './types';
+import { addComputer, addJewelry, deleteProduct, getInventory } from './services';
 
 import { ApplicationState } from '../index';
-import { InventoryActionTypes } from './types';
 import { ThunkAction } from 'redux-thunk';
 
 export type AppThunk = ActionCreator<ThunkAction<void, ApplicationState, null, Action<object>>>;
@@ -39,6 +39,46 @@ export const deleteProductRequest: AppThunk = (id: string) => {
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
+        payload: e.message
+      });
+    }
+  };
+};
+
+export const addComputerRequest: AppThunk = (computer: Computer) => {
+  return (dispatch: Dispatch): Action | undefined => {
+    try {
+      addComputer(computer).then(() => {
+        return getInventory().then((response) =>
+          dispatch({
+            type: InventoryActionTypes.ADD_COMPUTER_SUCCESS,
+            payload: response
+          })
+        );
+      });
+    } catch (e: any) {
+      return dispatch({
+        type: InventoryActionTypes.ADD_COMPUTER_FAILURE,
+        payload: e.message
+      });
+    }
+  };
+};
+
+export const addJewelryRequest: AppThunk = (jewel: Jewelry) => {
+  return (dispatch: Dispatch): Action | undefined => {
+    try {
+      addJewelry(jewel).then(() => {
+        return getInventory().then((response) =>
+          dispatch({
+            type: InventoryActionTypes.ADD_JEWELRY_SUCCESS,
+            payload: response
+          })
+        );
+      });
+    } catch (e: any) {
+      return dispatch({
+        type: InventoryActionTypes.ADD_JEWELRY_FAILURE,
         payload: e.message
       });
     }

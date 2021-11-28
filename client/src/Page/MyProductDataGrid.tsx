@@ -70,8 +70,8 @@ function MyProductDataGrid({
   const deleteProduct = (product: Product | any) => {
     deleteProductRequest({ id: product.id });
   };
-
-  return loading ? (
+  console.log('loading', loading);
+  return loading === true ? (
     <Loading />
   ) : (
     <DataGrid data={data} headers={headers} deleteEntry={deleteProduct} />

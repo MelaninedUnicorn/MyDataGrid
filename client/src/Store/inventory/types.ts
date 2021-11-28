@@ -22,7 +22,6 @@ export type InventoryState = {
   readonly data: Product[];
   readonly loading: boolean;
   readonly error?: string;
-  csrf?: string;
 };
 
 export enum InventoryActionTypes {
@@ -31,5 +30,11 @@ export enum InventoryActionTypes {
   GET_INVENTORY_FAILURE = '@@inventory/GET_INVENTORY_FAILURE',
   DELETE_PRODUCT_REQUEST = '@@inventory/DELETE_PRODUCT_REQUEST',
   DELETE_PRODUCT_SUCCESS = '@@inventory/DELETE_PRODUCT_SUCCESS',
-  DELETE_PRODUCT_FAILURE = '@@inventory/DELETE_PRODUCT_FAILURE'
+  DELETE_PRODUCT_FAILURE = '@@inventory/DELETE_PRODUCT_FAILURE',
+  ADD_JEWELRY_REQUEST = '@@inventory/ADD_JEWELRY_REQUEST',
+  ADD_JEWELRY_SUCCESS = '@@inventory/ADD_JEWELRY_SUCCESS',
+  ADD_JEWELRY_FAILURE = '@@inventory/ADD_JEWELRY_FAILURE',
+  ADD_COMPUTER_REQUEST = '@@inventory/ADD_COMPUTER_REQUEST',
+  ADD_COMPUTER_SUCCESS = '@@inventory/ADD_COMPUTER_SUCCESS',
+  ADD_COMPUTER_FAILURE = '@@inventory/ADD_COMPUTER_FAILURE'
 }

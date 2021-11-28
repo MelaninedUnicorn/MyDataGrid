@@ -14,7 +14,7 @@ function App() {
       <Grid item>
         <MyProductDataGrid />
       </Grid>
-      <Grid item>
+      <Grid item xs={10}>
         <Typography variant={'h4'} align="center">
           Mugisha&apos;s Product Data Grid
         </Typography>
