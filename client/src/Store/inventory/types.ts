@@ -22,8 +22,7 @@ export type InventoryState = {
   readonly data: Product[];
   readonly loading: boolean;
   readonly error?: string;
-  fetchInventoryRequest?: () => {};
-  deleteProductRequest?: () => {};
+  csrf?: string;
 };
 
 export enum InventoryActionTypes {

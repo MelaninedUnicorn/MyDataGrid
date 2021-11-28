@@ -9,10 +9,39 @@ import Loading from '../Components/Loading/Loading';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import lodash from 'lodash';
+import { setCsrfToken } from '../Store/inventory/services';
 
-function MyProductDataGrid({ loading, data, fetchInventoryRequest }: InventoryState) {
+const mapStateToProps = ({ inventory }: ApplicationState) => ({
+  loading: inventory.loading,
+  errors: inventory.error,
+  data: inventory.data
+});
+
+const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
+  return {
+    fetchInventoryRequest: () => {
+      dispatch(fetchInventoryRequest());
+    },
+    deleteProductRequest: (body: { id: string }) => {
+      dispatch(deleteProductRequest(body));
+    }
+  };
+};
+
+type MyProductDataGridProps = InventoryState & ReturnType<typeof mapDispatchToProps>;
+
+function MyProductDataGrid({
+  loading,
+  data,
+  fetchInventoryRequest,
+  deleteProductRequest
+}: MyProductDataGridProps) {
   useEffect(() => {
-    fetchInventoryRequest && fetchInventoryRequest();
+    setCsrfToken();
+  }, [setCsrfToken]);
+
+  useEffect(() => {
+    fetchInventoryRequest();
   }, [fetchInventoryRequest]);
 
   const headers = [
@@ -38,25 +67,15 @@ function MyProductDataGrid({ loading, data, fetchInventoryRequest }: InventorySt
     },
     { field: 'description', headerName: 'Description' }
   ];
-
-  return loading ? <Loading /> : <DataGrid data={data} headers={headers} />;
-}
-
-const mapStateToProps = ({ inventory }: ApplicationState) => ({
-  loading: inventory.loading,
-  errors: inventory.error,
-  data: inventory.data
-});
-
-const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
-  return {
-    fetchInventoryRequest: () => {
-      dispatch(fetchInventoryRequest());
-    },
-    deleteProductRequest: () => {
-      dispatch(deleteProductRequest());
-    }
+  const deleteProduct = (product: Product | any) => {
+    deleteProductRequest({ id: product.id });
   };
-};
+
+  return loading ? (
+    <Loading />
+  ) : (
+    <DataGrid data={data} headers={headers} deleteEntry={deleteProduct} />
+  );
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MyProductDataGrid);

@@ -2,9 +2,9 @@
  * Function to create a unique ID
  * @returns a unique user id
  */
-export const uid = ():string => {
-    const head = Date.now().toString(36);
-    const tail = Math.random ().toString(36).substr(2);
+export const uid = (): string => {
+	const head = Date.now().toString(36);
+	const tail = Math.random().toString(36).substr(2);
 
-    return head+tail;
-}
+	return head + tail;
+};

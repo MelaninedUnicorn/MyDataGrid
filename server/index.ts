@@ -1,9 +1,10 @@
-import CsurfController from './Controllers/csurf.controllers';
+import CsurfController from "./Controllers/csurf.controllers";
 import InventoryController from "./Controllers/inventory.controllers";
-import cookieParser from 'cookie-parser';
-import csrf from 'csurf';
+import cookieParser from "cookie-parser";
+import cors from "cors";
+import csrf from "csurf";
 import express from "express";
-import helmet from 'helmet';
+import helmet from "helmet";
 import loggerMiddleware from "./Middleware/logger";
 
 const app = express();
@@ -11,7 +12,6 @@ const port = process.env.PORT || 5000;
 
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
-
 
 /**
  * MIDDLEWARES
@@ -26,24 +26,36 @@ app.use(loggerMiddleware);
 app.use(helmet());
 
 // Cross-site  request forgery
-app.use(cookieParser())
+const corsOptions = {
+	origin: "http://localhost:3000",
+	credentials: true,
+};
 
-const csrfProtection = csrf({ cookie: { httpOnly: true, }});
+app.use(cors(corsOptions));
 
-app.use(csrfProtection);
+app.use(cookieParser());
 
-/** 
-* ROUTES
-*/
+const csrfMiddleware = csrf({
+	cookie: {
+		httpOnly: true,
+		secure: process.env.NODE_ENV === "production",
+	},
+});
 
-app.get('/inventory', InventoryController.getAllProducts);
+app.use(csrfMiddleware);
 
-app.delete('/inventory', InventoryController.deleteProduct);
+/**
+ * ROUTES
+ */
 
-app.post('/addComputer', InventoryController.addComputer);
+app.get("/getCsrfToken", CsurfController.getCsrfToken);
 
-app.post('/addJewel', InventoryController.addJewelry);
+app.get("/inventory", InventoryController.getAllProducts);
 
-app.all('*',CsurfController.getCsrfToken);
+app.delete("/inventory", InventoryController.deleteProduct);
+
+app.post("/addComputer", InventoryController.addComputer);
+
+app.post("/addJewel", InventoryController.addJewelry);
 
 export default app;

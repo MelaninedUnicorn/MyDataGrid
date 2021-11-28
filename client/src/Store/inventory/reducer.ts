@@ -14,7 +14,12 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       return { ...state, loading: true };
     }
     case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
-      return { ...state, loading: false, data: action.payload };
+      console.log('action payload', action.payload);
+      return {
+        ...state,
+        loading: false,
+        data: action.payload
+      };
     }
     case InventoryActionTypes.GET_INVENTORY_FAILURE: {
       return { ...state, loading: false, error: action.payload };

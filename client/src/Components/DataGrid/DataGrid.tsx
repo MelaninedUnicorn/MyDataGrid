@@ -19,6 +19,8 @@ interface DataGridProps {
   title?: string;
   initialPageSize?: number;
   data: object[];
+  // eslint-disable-next-line no-unused-vars
+  deleteEntry?: (dataEntry: object) => void;
 }
 
 interface DataGridState {
@@ -200,17 +202,21 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     );
   };
 
-  deleteRow = (data: object) => {
-    /**
-         *For the demo this function deletes the product in the local state. 
-        The full implementation would obviously check if a deleteEntry function 
-        has been passed as a prop (in this case, the redux function 'deleteProductRequest')
-        and if none have been passed,just delete the entry in the local tableData state variable
-         */
+  deleteRow = (dataEntry: object) => {
     const { tableData } = this.state;
-    this.setState({
-      tableData: tableData.filter((entry) => entry !== data)
-    });
+    const { deleteEntry } = this.props;
+
+    if (deleteEntry) {
+      console.log('a delete entry function was called');
+      deleteEntry(dataEntry);
+      this.setState({
+        tableData: tableData.filter((entry) => entry !== dataEntry)
+      });
+    } else {
+      this.setState({
+        tableData: tableData.filter((entry) => entry !== dataEntry)
+      });
+    }
   };
   renderFooter = () => {
     const { tableData, page, pageSize } = this.state;
