@@ -75,7 +75,17 @@ const deleteProduct = async (id: string): Promise<any> => {
  * @param product
  */
 const editProduct = async (product: Product): Promise<any> => {
-  const response = await fetch('/inventory', { method: 'POST', body: JSON.stringify(product) });
+  const response = await fetch(`${domainUrl}/inventory`, {
+    method: 'POST',
+    body: JSON.stringify(product),
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'xsrf-token': cookie.load('csrfToken')
+    },
+    credentials: 'include',
+    mode: 'cors'
+  });
   const body = await response.json();
 
   if (response.status !== 200) {
@@ -97,11 +107,15 @@ const addJewelry = async (jewel: {
   type: string;
   material: string;
 }): Promise<any> => {
-  const response = await fetch('/addJewel', {
+  const response = await fetch(`${domainUrl}/addJewel`, {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json; charset=UTF-8'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'xsrf-token': cookie.load('csrfToken')
     },
+    credentials: 'include',
+    mode: 'cors',
     body: JSON.stringify(jewel)
   });
   const body = await response.json();
@@ -126,11 +140,15 @@ const addComputer = async (computer: {
   year: string;
   keyboardLayout: 'qwerty' | 'azerty';
 }): Promise<any> => {
-  const response = await fetch('/addComputer', {
+  const response = await fetch(`${domainUrl}/addComputer`, {
     method: 'POST',
     headers: {
-      'Content-type': 'application/json; charset=UTF-8'
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+      'xsrf-token': cookie.load('csrfToken')
     },
+    credentials: 'include',
+    mode: 'cors',
     body: JSON.stringify(computer)
   });
   const body = await response.json();

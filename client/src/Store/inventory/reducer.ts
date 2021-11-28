@@ -14,7 +14,6 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       return { ...state, loading: true };
     }
     case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
-      console.log('action payload', action.payload);
       return {
         ...state,
         loading: false,
@@ -29,7 +28,7 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
     }
     case InventoryActionTypes.DELETE_PRODUCT_SUCCESS: {
       console.log('action payload', action.payload);
-      return { ...state, loading: false };
+      return { ...state, loading: false, data: action.payload };
     }
     case InventoryActionTypes.DELETE_PRODUCT_FAILURE: {
       return { ...state, loading: false, error: action.payload };

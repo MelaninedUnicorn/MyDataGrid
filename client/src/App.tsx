@@ -16,7 +16,7 @@ function App() {
       </Grid>
       <Grid item>
         <Typography variant={'h4'} align="center">
-          Mugisha&quot;s Product Data Grid
+          Mugisha&apos;s Product Data Grid
         </Typography>
         <Typography align="center">
           Feel free to delete or add products to the inventory using the forms below!

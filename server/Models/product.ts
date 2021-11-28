@@ -2,7 +2,7 @@
 import fs from "fs";
 import lodash from "lodash";
 import path from "path";
-import { uid } from "../Utils/uid";
+import { uid } from "../Utils/uid.utils";
 
 const p = path.join(
 	path.dirname(require.main?.filename || ""),

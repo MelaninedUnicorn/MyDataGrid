@@ -60,6 +60,7 @@ function JewelryForm() {
         <Grid item xs={12}>
           <TextField
             fullWidth
+            required
             id="price"
             label="Price"
             variant="outlined"

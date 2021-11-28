@@ -19,3 +19,4 @@ export class Computer extends Product {
 		this.keyboardLayout = keyboardLayout;
 	}
 }
+

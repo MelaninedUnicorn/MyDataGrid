@@ -7,9 +7,10 @@
 
 </div>
 
-
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
+
 Mugisha's attempt at making a re-usable data grid component.
 
 ### Requirements
@@ -18,39 +19,33 @@ Mugisha's attempt at making a re-usable data grid component.
 - Generic, re-usable API that abstracts away the underlying implementation.
 - Light backend that serves up the data.
 - Allow sorting by clicking on columns.
-- Please don't use a 3rd party data grid library.
-
 
 ### Built With
 
-* [Typescript](https://www.typescriptlang.org/)
-* [React.js](https://reactjs.org/)
-* [Express](https://expressjs.com/)
-* [Redux](https://redux.js.org/)
-* [Material](https://mui.com/)
-
+- [Typescript](https://www.typescriptlang.org/)
+- [React.js](https://reactjs.org/)
+- [Express](https://expressjs.com/)
+- [Redux](https://redux.js.org/)
+- [Material](https://mui.com/)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
 To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-
-* npm
+- npm
   ```sh
   npm install npm@latest -g
   ```
-* Typescript
+- Typescript
   ```sh
    npm install typescript --save-dev
   ```
- 
 
 ### Installation
 
@@ -62,44 +57,46 @@ To get a local copy up and running follow these simple example steps.
    ```sh
    npm run setup
    ```
-4. Enter the start command
+3. Enter the start command
    ```sh
    npm run start
    ```
-5. Head on to localhost:3000
+4. Wait until it loads onto your default browser or head on to localhost:3000
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-
-
 <!-- ROADMAP -->
+
 ## Roadmap
 
-- [x] The data grid component accepts an array of objects and displays them in a sortable table. 
-- [x] If no header prop is passed on,the object keys are used as column title. 
+- [x] the data grid component handles 100,000 of rows
+- [x] Light backend that serves the inventory (implemented with express)
+- [x] Product "api" that allows the implementation of different types of items to be added to an inventory
+- [x] The data grid component accepts an array of objects and displays them in a sortable table.
+- [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
+- [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
+- [x] Columns adapt to the size of the content (the first column is fixed for better readability)
 
 See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
+
 ## Full implementation
+
 This implementation is not complete. Here are a few things I would add to this project.
 
-- withLoading HOC
+- The data grid component should accept a renderEditRow prop in which a method that renders an edit row function along with the "saving" process is passed
 - withInventory HOC : If I wanted to display the data in different ways this would be a good addition.
 - fully implement redux to add Products to the inventory
-- The delete function would no only be in the state but would call the deleteProductRequest() prop that would be passed on as a "deleteEntry" function in the Data Grid component
 
 See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
 <!-- CONTRIBUTING -->
+
 ## Contributing
 
 Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
@@ -115,20 +112,12 @@ Don't forget to give the project a star! Thanks again!
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
-
-
-
 <!-- CONTACT -->
+
 ## Contact
 
 Mugisha Kakou - mugisha.kakou@gmail.com - [LinkedIn](https://www.linkedin.com/in/joycava/)
 
-
 Project Link: [Mugisha's Data Grid](https://github.com/MelaninedUnicorn/MyDataGrid)
 
 <p align="right">(<a href="#top">back to top</a>)</p>
-
-
-
-
-
