@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     },
     deleteProductRequest: (body: { id: string }) => {
       dispatch(deleteProductRequest(body));
+      dispatch(fetchInventoryRequest());
     }
   };
 };

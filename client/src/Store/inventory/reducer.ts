@@ -5,7 +5,7 @@ import { Reducer } from 'redux';
 const init: InventoryState = {
   data: [],
   error: undefined,
-  loading: true
+  loading: false
 };
 
 const reducer: Reducer<InventoryState> = (state = init, action) => {
@@ -14,16 +14,22 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       InventoryActionTypes.ADD_COMPUTER_REQUEST ||
       InventoryActionTypes.DELETE_PRODUCT_REQUEST ||
       InventoryActionTypes.ADD_JEWELRY_REQUEST: {
+      console.log('Should be setting loading to true');
       return { ...state, loading: true };
     }
-    case InventoryActionTypes.GET_INVENTORY_SUCCESS ||
-      InventoryActionTypes.DELETE_PRODUCT_SUCCESS ||
-      InventoryActionTypes.ADD_COMPUTER_SUCCESS ||
-      InventoryActionTypes.ADD_JEWELRY_SUCCESS: {
+    case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
       return {
         ...state,
         loading: false,
         data: action.payload
+      };
+    }
+    case InventoryActionTypes.DELETE_PRODUCT_SUCCESS ||
+      InventoryActionTypes.ADD_COMPUTER_SUCCESS ||
+      InventoryActionTypes.ADD_JEWELRY_SUCCESS: {
+      return {
+        ...state,
+        loading: false
       };
     }
     case InventoryActionTypes.GET_INVENTORY_FAILURE ||

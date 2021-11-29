@@ -119,6 +119,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       tableData: data
     };
   }
+
   sort = (field: string) => {
     const { tableData, sortedField } = this.state;
     const { data } = this.props;
@@ -208,9 +209,6 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
     if (deleteEntry) {
       deleteEntry(dataEntry);
-      this.setState({
-        tableData: tableData.filter((entry) => entry !== dataEntry)
-      });
     } else {
       this.setState({
         tableData: tableData.filter((entry) => entry !== dataEntry)

@@ -10,6 +10,9 @@ export type AppThunk = ActionCreator<ThunkAction<void, ApplicationState, null, A
 export const fetchInventoryRequest: AppThunk = () => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
+      dispatch({
+        type: InventoryActionTypes.GET_INVENTORY_REQUEST
+      });
       getInventory().then((response) =>
         dispatch({
           type: InventoryActionTypes.GET_INVENTORY_SUCCESS,
@@ -28,14 +31,14 @@ export const fetchInventoryRequest: AppThunk = () => {
 export const deleteProductRequest: AppThunk = (id: string) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
-      deleteProduct(id).then(() => {
-        return getInventory().then((response) =>
-          dispatch({
-            type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS,
-            payload: response
-          })
-        );
+      dispatch({
+        type: InventoryActionTypes.DELETE_PRODUCT_REQUEST
       });
+      deleteProduct(id).then(() =>
+        dispatch({
+          type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
+        })
+      );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
@@ -48,14 +51,14 @@ export const deleteProductRequest: AppThunk = (id: string) => {
 export const addComputerRequest: AppThunk = (computer: Computer) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
-      addComputer(computer).then(() => {
-        return getInventory().then((response) =>
-          dispatch({
-            type: InventoryActionTypes.ADD_COMPUTER_SUCCESS,
-            payload: response
-          })
-        );
+      dispatch({
+        type: InventoryActionTypes.ADD_COMPUTER_REQUEST
       });
+      addComputer(computer).then(() =>
+        dispatch({
+          type: InventoryActionTypes.ADD_COMPUTER_SUCCESS
+        })
+      );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.ADD_COMPUTER_FAILURE,
@@ -68,14 +71,14 @@ export const addComputerRequest: AppThunk = (computer: Computer) => {
 export const addJewelryRequest: AppThunk = (jewel: Jewelry) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
-      addJewelry(jewel).then(() => {
-        return getInventory().then((response) =>
-          dispatch({
-            type: InventoryActionTypes.ADD_JEWELRY_SUCCESS,
-            payload: response
-          })
-        );
+      dispatch({
+        type: InventoryActionTypes.ADD_JEWELRY_REQUEST
       });
+      addJewelry(jewel).then(() =>
+        dispatch({
+          type: InventoryActionTypes.ADD_JEWELRY_SUCCESS
+        })
+      );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.ADD_JEWELRY_FAILURE,

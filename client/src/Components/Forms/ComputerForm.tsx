@@ -1,5 +1,6 @@
 import { Button, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { addComputerRequest, fetchInventoryRequest } from '../../Store/inventory/action';
 
 import { AnyAction } from 'redux';
 import Box from '@mui/material/Box';
@@ -9,13 +10,13 @@ import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { ThunkDispatch } from 'redux-thunk';
-import { addComputerRequest } from '../../Store/inventory/action';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
   return {
     addComputerRequest: (computer: object) => {
       dispatch(addComputerRequest(computer));
+      dispatch(fetchInventoryRequest());
     }
   };
 };

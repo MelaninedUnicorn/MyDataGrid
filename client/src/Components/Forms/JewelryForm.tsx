@@ -1,22 +1,23 @@
 import { Button, Grid, Typography } from '@mui/material';
 import React, { useState } from 'react';
+import { addJewelryRequest, fetchInventoryRequest } from '../../Store/inventory/action';
 
 import { AnyAction } from 'redux';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import { ThunkDispatch } from 'redux-thunk';
-import { addJewelryRequest } from '../../Store/inventory/action';
 import { connect } from 'react-redux';
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
   return {
     addJewelryRequest: (jewel: object) => {
       dispatch(addJewelryRequest(jewel));
+      dispatch(fetchInventoryRequest());
     }
   };
 };
 
-function JewelryForm() {
+function JewelryForm({ addJewelryRequest }: ReturnType<typeof mapDispatchToProps>) {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
@@ -37,6 +38,7 @@ function JewelryForm() {
   return (
     <Box
       component="form"
+      autoComplete="off"
       sx={{
         '& > :not(style)': { m: 1, width: '50ch' }
       }}
