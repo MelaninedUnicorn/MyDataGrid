@@ -1,17 +1,16 @@
 import CsurfController from "./Controllers/csurf.controllers";
 import InventoryController from "./Controllers/inventory.controllers";
+import ProductsController from "./Controllers/products.controllers";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import csrf from "csurf";
 import express from "express";
 import helmet from "helmet";
-import loggerMiddleware from "./Middleware/logger";
+import loggerMiddleware from "./Middleware/logger.middleware";
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
 
-// This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`));
 
 /**
  * MIDDLEWARES
@@ -48,14 +47,19 @@ app.use(csrfMiddleware);
  * ROUTES
  */
 
+app.get("/", (request, response) => {
+	response.json({ info: "Node.js, Express, and Postgres API" });
+});
 app.get("/getCsrfToken", CsurfController.getCsrfToken);
 
-app.get("/inventory", InventoryController.getAllProducts);
+app.get("/products", ProductsController.getProducts);
 
-app.delete("/inventory", InventoryController.deleteProduct);
+app.get("/products/:id", ProductsController.getProductById);
+app.post("/products", ProductsController.createProduct);
+app.put("/products/:id", ProductsController.updateProduct);
+app.delete("/products/:id", ProductsController.deleteProduct);
 
-app.post("/addComputer", InventoryController.addComputer);
-
-app.post("/addJewel", InventoryController.addJewelry);
+// This displays message that the server running and listening to specified port
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 export default app;

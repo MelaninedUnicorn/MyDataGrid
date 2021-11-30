@@ -25,6 +25,7 @@ Mugisha's attempt at making a re-usable data grid component.
 - [Typescript](https://www.typescriptlang.org/)
 - [React.js](https://reactjs.org/)
 - [Express](https://expressjs.com/)
+- [PostGres](https://node-postgres.com/)
 - [Redux](https://redux.js.org/)
 - [Material](https://mui.com/)
 
