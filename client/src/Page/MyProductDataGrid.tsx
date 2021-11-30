@@ -8,7 +8,6 @@ import DataGrid from '../Components/DataGrid/DataGrid';
 import Loading from '../Components/Loading/Loading';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
-import lodash from 'lodash';
 import { setCsrfToken } from '../Store/inventory/services';
 
 const mapStateToProps = ({ inventory }: ApplicationState) => ({
@@ -22,9 +21,8 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     fetchInventoryRequest: () => {
       dispatch(fetchInventoryRequest());
     },
-    deleteProductRequest: (body: { id: string }) => {
-      dispatch(deleteProductRequest(body));
-      dispatch(fetchInventoryRequest());
+    deleteProductRequest: (id: string) => {
+      dispatch(deleteProductRequest(id));
     }
   };
 };
@@ -50,28 +48,12 @@ function MyProductDataGrid({
     { field: 'title', headerName: 'Title' },
     { field: 'category', headerName: 'Category' },
     { field: 'price', headerName: 'Price' },
-    {
-      field: 'specifications',
-      headerName: 'Specifications',
-      sortable: false,
-      valueGetter: (product: Product) => {
-        // eslint-disable-next-line no-unused-vars
-        let { id, title, description, price, category, ...specifications } = product;
-        const { startCase } = lodash;
-
-        let specsToString = '';
-        for (const [key, value] of Object.entries(specifications)) {
-          specsToString += `-${startCase(key)}: ${value} \n `;
-        }
-        return specsToString;
-      }
-    },
     { field: 'description', headerName: 'Description' }
   ];
   const deleteProduct = (product: Product | any) => {
-    deleteProductRequest({ id: product.id });
+    deleteProductRequest(product.id);
   };
-  console.log('loading', loading);
+
   return loading === true ? (
     <Loading />
   ) : (

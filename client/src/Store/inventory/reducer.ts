@@ -11,10 +11,9 @@ const init: InventoryState = {
 const reducer: Reducer<InventoryState> = (state = init, action) => {
   switch (action.type) {
     case InventoryActionTypes.GET_INVENTORY_REQUEST ||
-      InventoryActionTypes.ADD_COMPUTER_REQUEST ||
+      InventoryActionTypes.ADD_PRODUCT_REQUEST ||
       InventoryActionTypes.DELETE_PRODUCT_REQUEST ||
-      InventoryActionTypes.ADD_JEWELRY_REQUEST: {
-      console.log('Should be setting loading to true');
+      InventoryActionTypes.UPDATE_PRODUCT_REQUEST: {
       return { ...state, loading: true };
     }
     case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
@@ -25,8 +24,8 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       };
     }
     case InventoryActionTypes.DELETE_PRODUCT_SUCCESS ||
-      InventoryActionTypes.ADD_COMPUTER_SUCCESS ||
-      InventoryActionTypes.ADD_JEWELRY_SUCCESS: {
+      InventoryActionTypes.ADD_PRODUCT_SUCCESS ||
+      InventoryActionTypes.UPDATE_PRODUCT_SUCCESS: {
       return {
         ...state,
         loading: false
@@ -34,8 +33,8 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
     }
     case InventoryActionTypes.GET_INVENTORY_FAILURE ||
       InventoryActionTypes.DELETE_PRODUCT_FAILURE ||
-      InventoryActionTypes.ADD_COMPUTER_FAILURE ||
-      InventoryActionTypes.ADD_JEWELRY_FAILURE: {
+      InventoryActionTypes.ADD_PRODUCT_FAILURE ||
+      InventoryActionTypes.UPDATE_PRODUCT_FAILURE: {
       return { ...state, loading: false, error: action.payload };
     }
 

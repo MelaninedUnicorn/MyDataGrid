@@ -55,8 +55,11 @@ app.get("/getCsrfToken", CsurfController.getCsrfToken);
 app.get("/products", ProductsController.getProducts);
 
 app.get("/products/:id", ProductsController.getProductById);
+
 app.post("/products", ProductsController.createProduct);
+
 app.put("/products/:id", ProductsController.updateProduct);
+
 app.delete("/products/:id", ProductsController.deleteProduct);
 
 // This displays message that the server running and listening to specified port

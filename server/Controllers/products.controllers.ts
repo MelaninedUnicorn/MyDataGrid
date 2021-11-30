@@ -32,7 +32,8 @@ const createProduct = (request: Request, response: Response) => {
 			if (error) {
 				throw error;
 			}
-			response.status(201).send(`Product added with ID: ${results}`);
+
+			response.status(201);
 		}
 	);
 };
@@ -60,12 +61,12 @@ const deleteProduct = (request: Request, response: Response) => {
 		if (error) {
 			throw error;
 		}
-		response.status(200).send(`Product deleted with ID: ${id}`);
+		response.status(200);
 	});
 };
 
 export default {
-    getProducts,
+	getProducts,
 	getProductById,
 	createProduct,
 	updateProduct,
