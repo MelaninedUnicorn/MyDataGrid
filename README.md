@@ -20,6 +20,18 @@ Mugisha's attempt at making a re-usable data grid component.
 - Light backend that serves up the data.
 - Allow sorting by clicking on columns.
 
+## Roadmap
+
+What I implemented
+
+- [x] the data grid component handles 100,000 of rows
+- [x] Light backend that serves the inventory (implemented with express and postgre)
+- [x] The data grid component accepts an array of objects and displays them in a sortable table.
+- [x] The data grid component can be used dynamically or statically.
+- [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
+- [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
+- [x] Columns adapt to the size of the content (the first column is fixed for better readability)
+
 ### Built With
 
 - [Typescript](https://www.typescriptlang.org/)
@@ -68,16 +80,6 @@ To get a local copy up and running follow these simple example steps.
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 <!-- ROADMAP -->
-
-## Roadmap
-
-- [x] the data grid component handles 100,000 of rows
-- [x] Light backend that serves the inventory (implemented with express)
-- [x] The data grid component accepts an array of objects and displays them in a sortable table.
-- [x] The data grid component can be used dynamically or statically.
-- [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
-- [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
-- [x] Columns adapt to the size of the content (the first column is fixed for better readability)
 
 See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 

@@ -1,11 +1,12 @@
-import CsurfController from "./Controllers/csurf.controllers";
 import ProductsController from "./Controllers/products.controllers";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import csrf from "csurf";
+import csrfRoute from "./Routes/csrf.routes";
 import express from "express";
 import helmet from "helmet";
 import loggerMiddleware from "./Middleware/logger.middleware";
+import productRoute from "./Routes/products.routes";
 
 const app = express();
 const port = 5000;
@@ -45,22 +46,13 @@ app.use(csrfMiddleware);
  * ROUTES
  */
 
-app.get("/", (request, response) => {
-	response.json({ info: "Node.js, Express, and Postgres API" });
-});
-app.get("/getCsrfToken", CsurfController.getCsrfToken);
+app.get(
+	"/products-page/:limit/:page/:sortField/:order",
+	ProductsController.getProductsPage
+);
 
-app.get("/products-page/:limit/:page/:sortField/:order",ProductsController.getProductsPage);
-
-app.get("/products", ProductsController.getProducts);
-
-app.get("/products/:id", ProductsController.getProductById);
-
-app.post("/products", ProductsController.createProduct);
-
-app.put("/products/:id", ProductsController.updateProduct);
-
-app.delete("/products/:id", ProductsController.deleteProduct);
+app.use("/products", productRoute);
+app.use("/getCsrfToken", csrfRoute);
 
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));
