@@ -1,13 +1,13 @@
+import CsurfController from "./Controllers/csurf.controllers";
 import ProductsController from "./Controllers/products.controllers";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import csrf from "csurf";
-import csrfRoute from "./Routes/csrf.routes";
+import csrfRoutes from "./Routes/csrf.routes";
 import express from "express";
 import helmet from "helmet";
 import loggerMiddleware from "./Middleware/logger.middleware";
-import productRoute from "./Routes/products.routes";
-
+import productsRoutes from "./Routes/products.routes";
 const app = express();
 const port = 5000;
 
@@ -46,13 +46,9 @@ app.use(csrfMiddleware);
  * ROUTES
  */
 
-app.get(
-	"/products-page/:limit/:page/:sortField/:order",
-	ProductsController.getProductsPage
-);
+app.use("/getCsrfToken", csrfRoutes);
 
-app.use("/products", productRoute);
-app.use("/getCsrfToken", csrfRoute);
+app.use("/products", productsRoutes);
 
 // This displays message that the server running and listening to specified port
 app.listen(port, () => console.log(`Listening on port ${port}`));

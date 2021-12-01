@@ -2,6 +2,12 @@ import { Request, Response } from "express";
 
 import pool from "../Database/db.config";
 
+/**
+ * This controller gets all the entries from the products table
+ * sorted by id by ascending order
+ * @param request
+ * @param response
+ */
 const getProducts = (request: Request, response: Response) => {
 	pool.query("SELECT * FROM products ORDER BY id ASC", (error, results) => {
 		if (error) {
@@ -48,6 +54,11 @@ const getProductsPage = (request: Request, response: Response) => {
 	);
 };
 
+/**
+ *
+ * @param request This controller gets a product object by id
+ * @param response
+ */
 const getProductById = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 
@@ -59,6 +70,11 @@ const getProductById = (request: Request, response: Response) => {
 	});
 };
 
+/**
+ * This controller add a new product entry to the products table
+ * @param request
+ * @param response
+ */
 const createProduct = (request: Request, response: Response) => {
 	const { title, description, price, category } = request.body;
 
@@ -75,6 +91,11 @@ const createProduct = (request: Request, response: Response) => {
 	);
 };
 
+/**
+ * This controller updates a product entry to the products table
+ * @param request
+ * @param response
+ */
 const updateProduct = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 	const { title, description, price, category } = request.body;
@@ -90,7 +111,11 @@ const updateProduct = (request: Request, response: Response) => {
 		}
 	);
 };
-
+/**
+ * This controller deletes a product from the products table
+ * @param request
+ * @param response
+ */
 const deleteProduct = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 

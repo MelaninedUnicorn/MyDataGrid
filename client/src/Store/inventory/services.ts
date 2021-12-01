@@ -48,7 +48,7 @@ const getProducts = async (): Promise<Product[]> => {
 
 const getProductsPage = async ({ limit, page, sortField, order }: GetPage): Promise<Product[]> => {
   const response = await fetch(
-    `${domainUrl}/products-page/${limit}/${page}/${sortField}/${order}`,
+    `${domainUrl}/products/page/${limit}/${page}/${sortField}/${order}`,
     {
       method: 'GET',
       headers: {
