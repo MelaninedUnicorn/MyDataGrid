@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import query from "../Database/db.config";
+import { query } from "../Database/db.config";
 
 /**
  * This controller gets all the entries from the products table

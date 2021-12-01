@@ -1,4 +1,5 @@
-import { Pool } from "pg";
+import { Pool, PoolClient } from "pg";
+
 import dotenv from "dotenv";
 
 dotenv.config();
@@ -14,7 +15,15 @@ const pool = new Pool({
 	},
 });
 
-const query = (
+/**
+ * This function will ensure that every query made to postgres on the server will be logged
+ * @param text
+ * @param params
+ * @param callback
+ * @returns
+ */
+
+export const query = (
 	text: string,
 	params: any,
 	callback: (err: Error, res: any) => void
@@ -26,4 +35,3 @@ const query = (
 		callback(err, res);
 	});
 };
-export default query;
