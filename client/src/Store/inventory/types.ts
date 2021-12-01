@@ -1,4 +1,15 @@
 /* eslint-disable no-unused-vars */
+
+export const init: InventoryState = {
+  data: [],
+  error: undefined,
+  loading: false,
+  order: 'ASC',
+  sortField: 'id',
+  currentPage: 1,
+  limit: 10,
+  total: 0
+};
 export interface Product {
   readonly id?: string;
   title: string;
@@ -6,7 +17,9 @@ export interface Product {
   price: number;
   category: string;
 }
-
+/**
+ * Type of the returned object from the server
+ */
 export type GetPage = {
   limit: number;
   page: number;

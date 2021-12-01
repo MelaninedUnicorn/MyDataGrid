@@ -29,20 +29,20 @@ export const fetchInventoryRequest: AppThunk = (fetchDetails: GetPage) => {
 };
 
 export const deleteProductRequest: AppThunk = (id: string) => {
-  return (dispatch: Dispatch): Action | undefined => {
+  return async (dispatch: Dispatch): Promise<Action | undefined> => {
     try {
       dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_REQUEST
       });
-      deleteProduct(id);
+      deleteProduct(id).then(() => {
+        dispatch({
+          type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
+        });
+      });
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
         payload: e.message
-      });
-    } finally {
-      dispatch({
-        type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
       });
     }
   };

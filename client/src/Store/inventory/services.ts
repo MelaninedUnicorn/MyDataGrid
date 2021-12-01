@@ -46,6 +46,12 @@ const getProducts = async (): Promise<Product[]> => {
   }
 };
 
+/**
+ * Service function that makes a get request to
+ * the api to get specific sorted portion of the products table
+ * @param pageDetails
+ * @returns an object of type @GetPage
+ */
 const getProductsPage = async ({ limit, page, sortField, order }: GetPage): Promise<Product[]> => {
   const response = await fetch(
     `${domainUrl}/products/page/${limit}/${page}/${sortField}/${order}`,
@@ -88,7 +94,7 @@ const deleteProduct = async (id: string): Promise<any> => {
   if (response.status !== 200) {
     throw new Error(body.message);
   } else {
-    return;
+    return body;
   }
 };
 

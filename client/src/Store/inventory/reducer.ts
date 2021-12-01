@@ -1,17 +1,6 @@
-import { InventoryActionTypes, InventoryState } from './types';
+import { InventoryActionTypes, InventoryState, init } from './types';
 
 import { Reducer } from 'redux';
-
-const init: InventoryState = {
-  data: [],
-  error: undefined,
-  loading: false,
-  order: 'ASC',
-  sortField: 'id',
-  currentPage: 1,
-  limit: 10,
-  total: 0
-};
 
 const reducer: Reducer<InventoryState> = (state = init, action) => {
   switch (action.type) {
@@ -34,9 +23,9 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
         total: parseInt(total)
       };
     }
-    case InventoryActionTypes.DELETE_PRODUCT_SUCCESS ||
-      InventoryActionTypes.ADD_PRODUCT_SUCCESS ||
-      InventoryActionTypes.UPDATE_PRODUCT_SUCCESS: {
+    case InventoryActionTypes.ADD_PRODUCT_SUCCESS ||
+      InventoryActionTypes.UPDATE_PRODUCT_SUCCESS ||
+      InventoryActionTypes.DELETE_PRODUCT_SUCCESS: {
       return {
         ...state,
         loading: false

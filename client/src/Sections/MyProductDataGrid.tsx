@@ -26,7 +26,7 @@ const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
     fetchInventoryRequest: (pageDetails: GetPage) => {
       dispatch(fetchInventoryRequest(pageDetails));
     },
-    deleteProductRequest: (id: string) => {
+    deleteProductRequest: async (id: string) => {
       dispatch(deleteProductRequest(id));
     }
   };
@@ -65,14 +65,17 @@ function MyProductDataGrid({
    * This function will dispatch the DELETE_PRODUCT_REQUEST action
    * @param product
    */
-  const deleteProduct = (product: Product) => {
-    deleteProductRequest(product.id?);
+  const deleteProduct = (product: Product | any) => {
+    const { id } = product;
+    deleteProductRequest(id as string).then(() => {
+      fetchInventoryRequest({ limit, page: currentPage, sortField, order });
+    });
   };
 
   /**
-    * Defining the function that will be passed onto the data grid component as @getPage
+   * Defining the function that will be passed onto the data grid component as @getPage
    * This function will dispatch the GET_INVENTORY_REQUEST action
-   * @param pageDetails 
+   * @param pageDetails
    */
   const getPage = ({ limit, page, sortField, order }: GetPage) => {
     fetchInventoryRequest({ limit, page, sortField, order });
