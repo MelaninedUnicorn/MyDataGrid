@@ -1,4 +1,5 @@
 import { DataGridContainer, PaginationBarContainer, Table, Td, Th, Tr } from './DataGrid.styles';
+import { DataGridProps, DataGridState, Header } from './DataGrid.types';
 import {
   FormControl,
   Grid,
@@ -12,43 +13,7 @@ import {
 import React, { Component } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
-import { GetPage } from '../../Store/inventory/types';
-import Swal from 'sweetalert2';
 import sorter from '../../Utils/sorter.utils';
-
-interface Header {
-  field: string;
-  headerName: string;
-  sortable?: boolean;
-  type?: string;
-  // eslint-disable-next-line no-unused-vars
-  valueGetter?(params: object): string;
-  deleteEntry?: string | object;
-}
-interface DataGridProps {
-  headers?: Header[];
-  title?: string;
-  initialPageSize?: number;
-  data: object[];
-  // Dynamic data grid props
-  dynamic?: boolean;
-  currentPage?: number;
-  currentSortField?: string;
-  order?: 'ASC' | 'DESC';
-  total?: number;
-  // eslint-disable-next-line no-unused-vars
-  deleteEntry?: (dataEntry: object) => void;
-  // eslint-disable-next-line no-unused-vars
-  getPage?: (pageDetails: GetPage) => void;
-}
-
-interface DataGridState {
-  sortedField: string;
-  page: number;
-  pageSize: number;
-  tableData: object[];
-  currentOrder: 'ASC' | 'DESC';
-}
 
 export default class DataGrid extends Component<DataGridProps, DataGridState> {
   constructor(props: DataGridProps) {
@@ -84,10 +49,8 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             sortField: field,
             order: newOrder as 'ASC' | 'DESC'
           })
-        : Swal.fire(
-            'Error',
-            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
+        : console.error(
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.'
           );
     } else {
       const newData =
@@ -102,7 +65,11 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       });
     }
   };
-
+  /**
+   *This function is called if no headers' prop has been assigned
+   * and it  gets the keys from the first object of the passed prop
+   * @returns an object of this Headers
+   */
   getHeadersFromData = (): Header[] => {
     // if a headers prop has not been assigned, one is generated from the first object of the data array
     const headers: Header[] = [];
@@ -113,7 +80,12 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
     return headers;
   };
-
+  /**
+   * Function that prints the table heading cells
+   * @param _cell
+   * @param cellIndex
+   * @returns a Th component with the header name
+   */
   renderHeaderCells = (_cell: Header, cellIndex: number) => {
     const notSortable = _cell.sortable === false;
 
@@ -138,9 +110,19 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     }
   };
 
+  /**
+   * This function gets the print order to uniformly print the objects
+   * if there are headers defined, it prints in that order 
+   * else print in the generated headers order. It then goes to print the value by checking 
+   * if there is a getValue function assigned to this field
+
+   * @param _data 
+   * @param dataIndex 
+   * @returns a Tr component with all the current entry's information and a delete in
+   */
   renderRow = (_data: any, dataIndex: number) => {
     const { headers } = this.props;
-    // if there are headers defined, print in that order else print in the generated headers order
+
     const printOrder = headers
       ? headers.map((header) => header.field)
       : this.getHeadersFromData().map((header) => header.field);
@@ -148,7 +130,6 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     return (
       <Tr key={`row-${dataIndex}`}>
         {printOrder.map((fieldName) => {
-          // check if that field has a value getter and if so, use it to set the content
           const valueGetter =
             headers && headers.find((header) => header.field === fieldName)?.valueGetter;
           const content = valueGetter ? valueGetter(_data) : _data[fieldName];
@@ -168,7 +149,13 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       </Tr>
     );
   };
-
+  /**
+   * This function checks if the Data Grid component is used dynamically,
+   * if so, it expects a @deleteEntry function to be passed via the props and executes it
+   * and if @deleteEntry is undefined it logs an error for the developer
+   * if the Data Grid component is not used dynamically, this function simply removes the entry from the state
+   * @param dataEntry
+   */
   deleteRow = (dataEntry: object) => {
     const { tableData } = this.state;
     const { deleteEntry, dynamic } = this.props;
@@ -176,10 +163,8 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     if (dynamic) {
       deleteEntry
         ? deleteEntry(dataEntry)
-        : Swal.fire(
-            'Error',
-            'The "deleteEntry" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
+        : console.error(
+            'The "deleteEntry" props is undefined. Please set it if you want to use this component dynamically.'
           );
     } else {
       this.setState({
@@ -187,6 +172,14 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       });
     }
   };
+  /**
+   * This function is called by the Pagination bar and first checks if the Data Grid component is used dynamically
+   * if so, it expects a @getPage function to be passed via the props and executes it to get the page requested
+   * and if @getPage is undefined, it logs an error for the developer
+   * if the Data Grid component is not used dynamically, this function simply sets the new page number in the state
+   * @param event
+   * @param newPage
+   */
   handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
     const { currentOrder, sortedField, pageSize } = this.state;
     const { dynamic, getPage } = this.props;
@@ -198,15 +191,20 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             sortField: sortedField,
             order: currentOrder
           })
-        : Swal.fire(
-            'Error',
-            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
+        : console.error(
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.'
           );
     } else {
       this.setState({ page: newPage });
     }
   };
+  /**
+   * This function is called by the Pagination bar and first checks if the Data Grid component is used dynamically
+   * if so, it expects a @getPage function to be passed via the props and executes it to get the page requested with a new size
+   * and if @getPage is undefined, it logs an error for the developer
+   * if the Data Grid component is not used dynamically, this function simply sets the new page size in the state
+   * @param event
+   */
   handlePageSizeChange = (event: SelectChangeEvent) => {
     const { currentOrder, sortedField, page } = this.state;
     const { dynamic, getPage } = this.props;
@@ -218,15 +216,18 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             sortField: sortedField,
             order: currentOrder
           })
-        : Swal.fire(
-            'Error',
-            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
+        : console.error(
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.'
           );
     } else {
       this.setState({ pageSize: parseInt(event.target.value) });
     }
   };
+  /**
+   * This function combines a select component along with with a pagination component
+   * to form the Data Grid's Pagination bar which controls part of the state of the component
+   * @returns
+   */
   renderPaginationBar = () => {
     const { dynamic, total } = this.props;
     const { tableData, page, pageSize } = this.state;
@@ -252,8 +253,11 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             >
               <MenuItem value={5}>Five</MenuItem>
               <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={15}>Fifteen</MenuItem>
               <MenuItem value={20}>Twenty</MenuItem>
               <MenuItem value={30}>Thirty</MenuItem>
+              <MenuItem value={50}>Fifty</MenuItem>
+              <MenuItem value={100}>One Hundred</MenuItem>
             </Select>
           </FormControl>
         </Grid>
