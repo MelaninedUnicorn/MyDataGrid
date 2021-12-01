@@ -49,20 +49,20 @@ export const deleteProductRequest: AppThunk = (id: string) => {
 };
 
 export const addProductRequest: AppThunk = (product: Product) => {
-  return (dispatch: Dispatch): Action | undefined => {
+  return async (dispatch: Dispatch): Promise<Action | undefined> => {
     try {
       dispatch({
         type: InventoryActionTypes.ADD_PRODUCT_REQUEST
       });
-      addProduct(product);
+      addProduct(product).then(() => {
+        dispatch({
+          type: InventoryActionTypes.ADD_PRODUCT_SUCCESS
+        });
+      });
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.ADD_PRODUCT_FAILURE,
         payload: e.message
-      });
-    } finally {
-      dispatch({
-        type: InventoryActionTypes.ADD_PRODUCT_SUCCESS
       });
     }
   };

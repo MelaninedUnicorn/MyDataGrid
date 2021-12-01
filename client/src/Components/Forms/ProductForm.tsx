@@ -1,27 +1,51 @@
 import { Button, Grid, Typography } from '@mui/material';
+import { GetPage, InventoryState, Product } from '../../Store/inventory/types';
 import React, { useState } from 'react';
+import { addProductRequest, fetchInventoryRequest } from '../../Store/inventory/action';
 
 import { AnyAction } from 'redux';
+import { ApplicationState } from '../../Store';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { Product } from '../../Store/inventory/types';
 import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import { ThunkDispatch } from 'redux-thunk';
-import { addProductRequest } from '../../Store/inventory/action';
 import { connect } from 'react-redux';
+
+const mapStateToProps = ({ inventory }: ApplicationState) => ({
+  loading: inventory.loading,
+  errors: inventory.error,
+  limit: inventory.limit,
+  currentPage: inventory.currentPage,
+  order: inventory.order,
+  data: inventory.data,
+  total: inventory.total,
+  sortField: inventory.sortField
+});
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
   return {
-    addProductRequest: (product: Product) => {
+    addProductRequest: async (product: Product) => {
       dispatch(addProductRequest(product));
+    },
+    fetchInventoryRequest: (pageDetails: GetPage) => {
+      dispatch(fetchInventoryRequest(pageDetails));
     }
   };
 };
 
-function ProductForm({ addProductRequest }: ReturnType<typeof mapDispatchToProps>) {
+type ProductFormProps = InventoryState & ReturnType<typeof mapDispatchToProps>;
+
+function ProductForm({
+  limit,
+  currentPage,
+  sortField,
+  order,
+  fetchInventoryRequest,
+  addProductRequest
+}: ProductFormProps) {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [price, setPrice] = useState<number>(0);
@@ -30,7 +54,9 @@ function ProductForm({ addProductRequest }: ReturnType<typeof mapDispatchToProps
   const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    addProductRequest({ title, description, price, category });
+    addProductRequest({ title, description, price, category }).then(() => {
+      fetchInventoryRequest({ limit, page: currentPage, sortField, order });
+    });
 
     setTitle('');
     setDescription('');
@@ -116,4 +142,4 @@ function ProductForm({ addProductRequest }: ReturnType<typeof mapDispatchToProps
   );
 }
 
-export default connect(null, mapDispatchToProps)(ProductForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ProductForm);
