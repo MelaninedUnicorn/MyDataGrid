@@ -1,19 +1,19 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { Computer, InventoryActionTypes, Jewelry } from './types';
-import { addComputer, addJewelry, deleteProduct, getInventory } from './services';
+import { GetPage, InventoryActionTypes, Product } from './types';
+import { addProduct, deleteProduct, getProductsPage, updateProduct } from './services';
 
 import { ApplicationState } from '../index';
 import { ThunkAction } from 'redux-thunk';
 
 export type AppThunk = ActionCreator<ThunkAction<void, ApplicationState, null, Action<object>>>;
 
-export const fetchInventoryRequest: AppThunk = () => {
+export const fetchInventoryRequest: AppThunk = (fetchDetails: GetPage) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
       dispatch({
         type: InventoryActionTypes.GET_INVENTORY_REQUEST
       });
-      getInventory().then((response) =>
+      getProductsPage(fetchDetails).then((response) =>
         dispatch({
           type: InventoryActionTypes.GET_INVENTORY_SUCCESS,
           payload: response
@@ -29,16 +29,16 @@ export const fetchInventoryRequest: AppThunk = () => {
 };
 
 export const deleteProductRequest: AppThunk = (id: string) => {
-  return (dispatch: Dispatch): Action | undefined => {
+  return async (dispatch: Dispatch): Promise<Action | undefined> => {
     try {
       dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_REQUEST
       });
-      deleteProduct(id).then(() =>
+      deleteProduct(id).then(() => {
         dispatch({
           type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
-        })
-      );
+        });
+      });
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
@@ -48,40 +48,40 @@ export const deleteProductRequest: AppThunk = (id: string) => {
   };
 };
 
-export const addComputerRequest: AppThunk = (computer: Computer) => {
-  return (dispatch: Dispatch): Action | undefined => {
+export const addProductRequest: AppThunk = (product: Product) => {
+  return async (dispatch: Dispatch): Promise<Action | undefined> => {
     try {
       dispatch({
-        type: InventoryActionTypes.ADD_COMPUTER_REQUEST
+        type: InventoryActionTypes.ADD_PRODUCT_REQUEST
       });
-      addComputer(computer).then(() =>
+      addProduct(product).then(() => {
         dispatch({
-          type: InventoryActionTypes.ADD_COMPUTER_SUCCESS
-        })
-      );
+          type: InventoryActionTypes.ADD_PRODUCT_SUCCESS
+        });
+      });
     } catch (e: any) {
       return dispatch({
-        type: InventoryActionTypes.ADD_COMPUTER_FAILURE,
+        type: InventoryActionTypes.ADD_PRODUCT_FAILURE,
         payload: e.message
       });
     }
   };
 };
 
-export const addJewelryRequest: AppThunk = (jewel: Jewelry) => {
+export const updateProductRequest: AppThunk = (product: Product) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
       dispatch({
-        type: InventoryActionTypes.ADD_JEWELRY_REQUEST
+        type: InventoryActionTypes.UPDATE_PRODUCT_REQUEST
       });
-      addJewelry(jewel).then(() =>
+      updateProduct(product).then(() =>
         dispatch({
-          type: InventoryActionTypes.ADD_JEWELRY_SUCCESS
+          type: InventoryActionTypes.UPDATE_PRODUCT_SUCCESS
         })
       );
     } catch (e: any) {
       return dispatch({
-        type: InventoryActionTypes.ADD_JEWELRY_FAILURE,
+        type: InventoryActionTypes.UPDATE_PRODUCT_FAILURE,
         payload: e.message
       });
     }

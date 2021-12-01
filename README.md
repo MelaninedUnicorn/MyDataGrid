@@ -20,11 +20,24 @@ Mugisha's attempt at making a re-usable data grid component.
 - Light backend that serves up the data.
 - Allow sorting by clicking on columns.
 
+## Roadmap
+
+What I implemented
+
+- [x] the data grid component handles 100,000 of rows
+- [x] Light backend that serves the inventory (implemented with express and postgre)
+- [x] The data grid component accepts an array of objects and displays them in a sortable table.
+- [x] The data grid component can be used dynamically or statically.
+- [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
+- [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
+- [x] Columns adapt to the size of the content (the first column is fixed for better readability)
+
 ### Built With
 
 - [Typescript](https://www.typescriptlang.org/)
 - [React.js](https://reactjs.org/)
 - [Express](https://expressjs.com/)
+- [PostGres](https://node-postgres.com/)
 - [Redux](https://redux.js.org/)
 - [Material](https://mui.com/)
 
@@ -43,6 +56,7 @@ To get a local copy up and running follow these simple example steps.
   npm install npm@latest -g
   ```
 - Typescript
+  If you do not want to install typescript globally, install it as a dev dependency
   ```sh
    npm install typescript --save-dev
   ```
@@ -67,16 +81,6 @@ To get a local copy up and running follow these simple example steps.
 
 <!-- ROADMAP -->
 
-## Roadmap
-
-- [x] the data grid component handles 100,000 of rows
-- [x] Light backend that serves the inventory (implemented with express)
-- [x] Product "api" that allows the implementation of different types of items to be added to an inventory
-- [x] The data grid component accepts an array of objects and displays them in a sortable table.
-- [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
-- [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
-- [x] Columns adapt to the size of the content (the first column is fixed for better readability)
-
 See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
@@ -89,7 +93,6 @@ This implementation is not complete. Here are a few things I would add to this p
 
 - The data grid component should accept a renderEditRow prop in which a method that renders an edit row function along with the "saving" process is passed
 - withInventory HOC : If I wanted to display the data in different ways this would be a good addition.
-- fully implement redux to add Products to the inventory
 
 See the [open issues](https://github.com/MelaninedUnicorn/MyDataGrid/issues) for a full list of proposed features (and known issues).
 

@@ -1,8 +1,8 @@
 import { NextFunction, Request, Response } from "express";
 
 /**
- * This controller sets and sends the csrf token then proceeds to executing
- * the next middleware
+ * This controller gets and sends the csrf token then proceeds to executing
+ * the next middleware if there's one
  * @param req
  * @param res
  * @param next

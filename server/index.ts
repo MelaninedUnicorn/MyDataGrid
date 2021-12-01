@@ -1,17 +1,15 @@
 import CsurfController from "./Controllers/csurf.controllers";
-import InventoryController from "./Controllers/inventory.controllers";
+import ProductsController from "./Controllers/products.controllers";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import csrf from "csurf";
+import csrfRoutes from "./Routes/csrf.routes";
 import express from "express";
 import helmet from "helmet";
-import loggerMiddleware from "./Middleware/logger";
-
+import loggerMiddleware from "./Middleware/logger.middleware";
+import productsRoutes from "./Routes/products.routes";
 const app = express();
-const port = process.env.PORT || 5000;
-
-// This displays message that the server running and listening to specified port
-app.listen(port, () => console.log(`Listening on port ${port}`));
+const port = 5000;
 
 /**
  * MIDDLEWARES
@@ -48,14 +46,11 @@ app.use(csrfMiddleware);
  * ROUTES
  */
 
-app.get("/getCsrfToken", CsurfController.getCsrfToken);
+app.use("/getCsrfToken", csrfRoutes);
 
-app.get("/inventory", InventoryController.getAllProducts);
+app.use("/products", productsRoutes);
 
-app.delete("/inventory", InventoryController.deleteProduct);
-
-app.post("/addComputer", InventoryController.addComputer);
-
-app.post("/addJewel", InventoryController.addJewelry);
+// This displays message that the server running and listening to specified port
+app.listen(port, () => console.log(`Listening on port ${port}`));
 
 export default app;

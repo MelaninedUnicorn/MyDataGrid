@@ -1,0 +1,103 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.1
+-- Dumped by pg_dump version 14.1
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- Name: products; Type: TABLE; Schema: public; Owner: me
+--
+
+CREATE TABLE public.products (
+    id integer NOT NULL,
+    title text,
+    description text,
+    price numeric,
+    category text
+);
+
+
+ALTER TABLE public.products OWNER TO me;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE; Schema: public; Owner: me
+--
+
+CREATE SEQUENCE public.products_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.products_id_seq OWNER TO me;
+
+--
+-- Name: products_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: me
+--
+
+ALTER SEQUENCE public.products_id_seq OWNED BY public.products.id;
+
+
+--
+-- Name: products id; Type: DEFAULT; Schema: public; Owner: me
+--
+
+ALTER TABLE ONLY public.products ALTER COLUMN id SET DEFAULT nextval('public.products_id_seq'::regclass);
+
+
+--
+-- Data for Name: products; Type: TABLE DATA; Schema: public; Owner: me
+--
+
+COPY public.products (id, title, description, price, category) FROM stdin;
+1	Acer Nitro 5	A powerful gaming portable pc.	1000	computer
+2	Dragon necklace	A nice silver necklace with a stone incrusted rubis and emeralds	400	jewelry
+3	Black sparkly gown	A long black sparkly gown with a side cut that goes up to the thigh.	50	clothes
+7	See whats up in the server my gee	Lets gooo	400	jewelry
+9	gfhdfghd	dhfghdf	0	clothes
+10	gfhdfghd	gfhdfghd	5555	shoes
+20	Hi	fdgsfg	0	clothes
+21	Okay im now adding to the database 	trying to get a very long descripnijbibfubdsafuiabs	0	jewelry
+22	fgsdfgdfgs	sdfgdfgd	0	clothes
+23	fdgsdfgsdf	sdfgsdfgsdfgsdf	0	clothes
+\.
+
+
+--
+-- Name: products_id_seq; Type: SEQUENCE SET; Schema: public; Owner: me
+--
+
+SELECT pg_catalog.setval('public.products_id_seq', 23, true);
+
+
+--
+-- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: me
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- PostgreSQL database dump complete
+--
+

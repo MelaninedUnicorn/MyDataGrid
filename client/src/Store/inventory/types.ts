@@ -1,26 +1,40 @@
 /* eslint-disable no-unused-vars */
+
+export const init: InventoryState = {
+  data: [],
+  error: undefined,
+  loading: false,
+  order: 'ASC',
+  sortField: 'id',
+  currentPage: 1,
+  limit: 10,
+  total: 0
+};
 export interface Product {
-  readonly id: string;
+  readonly id?: string;
   title: string;
   description: string;
   price: number;
   category: string;
 }
-
-export interface Computer extends Product {
-  brand: string;
-  year: string;
-  keyboardLayout: 'azerty' | 'qwerty';
-}
-
-export interface Jewelry extends Product {
-  type: string;
-  material: string;
-}
+/**
+ * Type of the returned object from the server
+ */
+export type GetPage = {
+  limit: number;
+  page: number;
+  sortField: string;
+  order: 'ASC' | 'DESC';
+};
 
 export type InventoryState = {
-  readonly data: Product[];
   readonly loading: boolean;
+  readonly data: Product[];
+  readonly currentPage: number;
+  readonly order: 'ASC' | 'DESC';
+  readonly sortField: string;
+  readonly limit: number;
+  readonly total: number;
   readonly error?: string;
 };
 
@@ -31,10 +45,10 @@ export enum InventoryActionTypes {
   DELETE_PRODUCT_REQUEST = '@@inventory/DELETE_PRODUCT_REQUEST',
   DELETE_PRODUCT_SUCCESS = '@@inventory/DELETE_PRODUCT_SUCCESS',
   DELETE_PRODUCT_FAILURE = '@@inventory/DELETE_PRODUCT_FAILURE',
-  ADD_JEWELRY_REQUEST = '@@inventory/ADD_JEWELRY_REQUEST',
-  ADD_JEWELRY_SUCCESS = '@@inventory/ADD_JEWELRY_SUCCESS',
-  ADD_JEWELRY_FAILURE = '@@inventory/ADD_JEWELRY_FAILURE',
-  ADD_COMPUTER_REQUEST = '@@inventory/ADD_COMPUTER_REQUEST',
-  ADD_COMPUTER_SUCCESS = '@@inventory/ADD_COMPUTER_SUCCESS',
-  ADD_COMPUTER_FAILURE = '@@inventory/ADD_COMPUTER_FAILURE'
+  ADD_PRODUCT_REQUEST = '@@inventory/ADD_PRODUCT_REQUEST',
+  ADD_PRODUCT_SUCCESS = '@@inventory/ADD_PRODUCT_SUCCESS',
+  ADD_PRODUCT_FAILURE = '@@inventory/ADD_PRODUCT_FAILURE',
+  UPDATE_PRODUCT_REQUEST = '@@inventory/UPDATE_PRODUCT_REQUEST',
+  UPDATE_PRODUCT_SUCCESS = '@@inventory/UPDATE_PRODUCT_SUCCESS',
+  UPDATE_PRODUCT_FAILURE = '@@inventory/UPDATE_PRODUCT_FAILURE'
 }
