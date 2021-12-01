@@ -20,6 +20,7 @@ export type InventoryState = {
   readonly currentPage: number;
   readonly order: 'ASC' | 'DESC';
   readonly sortField: string;
+  readonly limit: number;
   readonly total: number;
   readonly error?: string;
 };

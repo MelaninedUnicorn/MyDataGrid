@@ -9,6 +9,7 @@ const init: InventoryState = {
   order: 'ASC',
   sortField: 'id',
   currentPage: 1,
+  limit: 10,
   total: 0
 };
 
@@ -21,13 +22,14 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       return { ...state, loading: true };
     }
     case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
-      const { products, currentPage, total, order, sortField } = action.payload;
+      const { products, currentPage, total, order, sortField, limit } = action.payload;
       return {
         ...state,
         loading: false,
         data: products,
         currentPage: parseInt(currentPage),
         sortField,
+        limit: parseInt(limit),
         order,
         total: parseInt(total)
       };

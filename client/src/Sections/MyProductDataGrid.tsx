@@ -13,6 +13,7 @@ import { setCsrfToken } from '../Store/inventory/services';
 const mapStateToProps = ({ inventory }: ApplicationState) => ({
   loading: inventory.loading,
   errors: inventory.error,
+  limit: inventory.limit,
   currentPage: inventory.currentPage,
   order: inventory.order,
   data: inventory.data,
@@ -38,6 +39,7 @@ function MyProductDataGrid({
   data,
   total,
   currentPage,
+  limit,
   sortField,
   order,
   fetchInventoryRequest,
@@ -71,6 +73,8 @@ function MyProductDataGrid({
   ) : (
     <DataGrid
       dynamic
+      title={'Dynamic Product DataGrid'}
+      initialPageSize={limit}
       total={total}
       data={data}
       order={order as 'ASC' | 'DESC'}

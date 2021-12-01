@@ -23,6 +23,7 @@ const getProductsPage = (request: Request, response: Response) => {
 		currentPage: page,
 		order,
 		sortField,
+		limit,
 		products: [{}],
 		total: 0,
 	};

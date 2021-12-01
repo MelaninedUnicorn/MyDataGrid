@@ -1,4 +1,13 @@
-import { IconButton, Pagination, Tooltip } from '@mui/material';
+import {
+  FormControl,
+  Grid,
+  IconButton,
+  MenuItem,
+  Pagination,
+  Select,
+  SelectChangeEvent,
+  Tooltip
+} from '@mui/material';
 import React, { Component } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -113,7 +122,7 @@ const DataGridContainer = styled.div`
 
 const FooterContainer = styled.div`
   display: flex;
-  justify-content: center;
+  // justify-content: center;
   width: 100vw;
 `;
 
@@ -189,7 +198,26 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       this.setState({ page: newPage });
     }
   };
-
+  handlePageSizeChange = (event: SelectChangeEvent) => {
+    const { currentOrder, sortedField, page } = this.state;
+    const { dynamic, getPage } = this.props;
+    if (dynamic) {
+      getPage
+        ? getPage({
+            limit: parseInt(event.target.value),
+            page: page,
+            sortField: sortedField,
+            order: currentOrder
+          })
+        : Swal.fire(
+            'Error',
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
+    } else {
+      this.setState({ pageSize: parseInt(event.target.value) });
+    }
+  };
   getHeadersFromData = (): Header[] => {
     // if a headers prop has not been assigned, one is generated from the first object of the data array
     const headers: Header[] = [];
@@ -281,14 +309,36 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       dynamic && total ? Math.ceil(total / pageSize) : Math.ceil(tableData.length / pageSize);
 
     return (
-      <Pagination
-        page={page}
-        count={count}
-        onChange={this.handlePageChange}
-        defaultPage={1}
-        variant={'outlined'}
-        size={'large'}
-      />
+      <FooterContainer>
+        <Grid item xs={2}>
+          <FormControl fullWidth variant="standard">
+            <Select
+              labelId="page-size-label"
+              id="page-size-select"
+              value={pageSize + ''}
+              label="Rows per Page"
+              onChange={this.handlePageSizeChange}
+            >
+              <MenuItem value={5}>Five</MenuItem>
+              <MenuItem value={10}>Ten</MenuItem>
+              <MenuItem value={20}>Twenty</MenuItem>
+              <MenuItem value={30}>Thirty</MenuItem>
+            </Select>
+          </FormControl>
+        </Grid>
+
+        <Grid item xs={10}>
+          <Pagination
+            style={{ width: '100%', backgroundColor: '#734e5f', color: 'white' }}
+            page={page}
+            count={count}
+            onChange={this.handlePageChange}
+            defaultPage={1}
+            variant={'outlined'}
+            size={'large'}
+          />
+        </Grid>
+      </FooterContainer>
     );
   };
   render() {
@@ -315,7 +365,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     const footer = this.renderFooter();
     return (
       <>
-        <FooterContainer>{footer}</FooterContainer>
+        {footer}
         <DataGridContainer>
           <Table>
             <thead>{header}</thead>
