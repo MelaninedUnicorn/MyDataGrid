@@ -41,7 +41,7 @@ function MyProductDataGrid({
 
   useEffect(() => {
     fetchInventoryRequest();
-  }, [fetchInventoryRequest]);
+  }, [fetchInventoryRequest, deleteProductRequest]);
 
   const headers = [
     { field: 'id', headerName: 'ID' },

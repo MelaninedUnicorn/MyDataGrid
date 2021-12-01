@@ -1,5 +1,4 @@
 import CsurfController from "./Controllers/csurf.controllers";
-import InventoryController from "./Controllers/inventory.controllers";
 import ProductsController from "./Controllers/products.controllers";
 import cookieParser from "cookie-parser";
 import cors from "cors";
@@ -10,7 +9,6 @@ import loggerMiddleware from "./Middleware/logger.middleware";
 
 const app = express();
 const port = 5000;
-
 
 /**
  * MIDDLEWARES
