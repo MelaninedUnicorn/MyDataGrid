@@ -60,10 +60,20 @@ function MyProductDataGrid({
     { field: 'price', headerName: 'Price' },
     { field: 'description', headerName: 'Description' }
   ];
-  const deleteProduct = (product: Product | any) => {
-    deleteProductRequest(product.id);
+  /**
+   * Defining the function that will be passed onto the data grid component as @deleteEntry
+   * This function will dispatch the DELETE_PRODUCT_REQUEST action
+   * @param product
+   */
+  const deleteProduct = (product: Product) => {
+    deleteProductRequest(product.id?);
   };
 
+  /**
+    * Defining the function that will be passed onto the data grid component as @getPage
+   * This function will dispatch the GET_INVENTORY_REQUEST action
+   * @param pageDetails 
+   */
   const getPage = ({ limit, page, sortField, order }: GetPage) => {
     fetchInventoryRequest({ limit, page, sortField, order });
   };

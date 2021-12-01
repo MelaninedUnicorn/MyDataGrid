@@ -2,7 +2,8 @@ import DataGrid from '../Components/DataGrid/DataGrid';
 import React from 'react';
 
 /**
- * This is an example of how the data grid component can be used statically
+ * This is an example of how the data
+ * grid component can be used statically with just an array of objects
  */
 function StaticDataGrid() {
   const data = [
@@ -1394,7 +1395,7 @@ function StaticDataGrid() {
       Category: 'Weather'
     }
   ];
-  return <DataGrid title={'List of some public APIs'} data={data} />;
+  return <DataGrid data={data} />;
 }
 
 export default StaticDataGrid;
