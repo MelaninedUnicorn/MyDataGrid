@@ -1,3 +1,4 @@
+import { DataGridContainer, PaginationBarContainer, Table, Td, Th, Tr } from './DataGrid.styles';
 import {
   FormControl,
   Grid,
@@ -14,7 +15,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { GetPage } from '../../Store/inventory/types';
 import Swal from 'sweetalert2';
 import sorter from '../../Utils/sorter.utils';
-import styled from 'styled-components';
 
 interface Header {
   field: string;
@@ -49,82 +49,6 @@ interface DataGridState {
   tableData: object[];
   currentOrder: 'ASC' | 'DESC';
 }
-const Table = styled.table`
-  border-spacing: 0px;
-  background: #fff;
-  box-shadow: 0 1px 0 0 rgba(22, 29, 37, 0.05);
-  width: 100%;
-  border-collapse: collapse;
-  table-layout: auto;
-`;
-
-const Tr = styled.tr`
-  &:nth-of-type(odd) {
-    background: #dde;
-  }
-`;
-
-const Th = styled.th`
-  &:first-child {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
-    color: #fff;
-  }
-  border: 1px solid #fff;
-  background-color: #734e5f;
-  color: #f4f6f8;
-  text-align: left;
-  padding: 14px 20px;
-`;
-const Td = styled.td`
-  &:first-child {
-    position: -webkit-sticky;
-    position: sticky;
-    left: 0;
-    background-color: #734e5f;
-    color: #fff;
-    font-weight: bold;
-  }
-  border: 1px solid #f4f6f8;
-  padding: 12px 20px;
-  text-align: left;
-  white-space: nowrap;
-  overflow: hidden;
-  white-space: nowrap;
-`;
-
-const DataGridContainer = styled.div`
-  width: 100vw;
-  overflow: scroll;
-
-  /* width and height*/
-  ::-webkit-scrollbar {
-    width: 10px;
-    height: 5px;
-  }
-
-  /* Track */
-  ::-webkit-scrollbar-track {
-    background: #f1f1f1;
-  }
-
-  /* Handle */
-  ::-webkit-scrollbar-thumb {
-    background: #965774;
-  }
-
-  /* Handle on hover */
-  ::-webkit-scrollbar-thumb:hover {
-    background: #734e5f;
-  }
-`;
-
-const FooterContainer = styled.div`
-  display: flex;
-  // justify-content: center;
-  width: 100vw;
-`;
 
 export default class DataGrid extends Component<DataGridProps, DataGridState> {
   constructor(props: DataGridProps) {
@@ -178,46 +102,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       });
     }
   };
-  handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    const { currentOrder, sortedField, pageSize } = this.state;
-    const { dynamic, getPage } = this.props;
-    if (dynamic) {
-      getPage
-        ? getPage({
-            limit: pageSize,
-            page: newPage,
-            sortField: sortedField,
-            order: currentOrder
-          })
-        : Swal.fire(
-            'Error',
-            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
-          );
-    } else {
-      this.setState({ page: newPage });
-    }
-  };
-  handlePageSizeChange = (event: SelectChangeEvent) => {
-    const { currentOrder, sortedField, page } = this.state;
-    const { dynamic, getPage } = this.props;
-    if (dynamic) {
-      getPage
-        ? getPage({
-            limit: parseInt(event.target.value),
-            page: page,
-            sortField: sortedField,
-            order: currentOrder
-          })
-        : Swal.fire(
-            'Error',
-            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
-            'error'
-          );
-    } else {
-      this.setState({ pageSize: parseInt(event.target.value) });
-    }
-  };
+
   getHeadersFromData = (): Header[] => {
     // if a headers prop has not been assigned, one is generated from the first object of the data array
     const headers: Header[] = [];
@@ -302,17 +187,63 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
       });
     }
   };
-  renderFooter = () => {
+  handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
+    const { currentOrder, sortedField, pageSize } = this.state;
+    const { dynamic, getPage } = this.props;
+    if (dynamic) {
+      getPage
+        ? getPage({
+            limit: pageSize,
+            page: newPage,
+            sortField: sortedField,
+            order: currentOrder
+          })
+        : Swal.fire(
+            'Error',
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
+    } else {
+      this.setState({ page: newPage });
+    }
+  };
+  handlePageSizeChange = (event: SelectChangeEvent) => {
+    const { currentOrder, sortedField, page } = this.state;
+    const { dynamic, getPage } = this.props;
+    if (dynamic) {
+      getPage
+        ? getPage({
+            limit: parseInt(event.target.value),
+            page: page,
+            sortField: sortedField,
+            order: currentOrder
+          })
+        : Swal.fire(
+            'Error',
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
+    } else {
+      this.setState({ pageSize: parseInt(event.target.value) });
+    }
+  };
+  renderPaginationBar = () => {
     const { dynamic, total } = this.props;
     const { tableData, page, pageSize } = this.state;
     const count =
       dynamic && total ? Math.ceil(total / pageSize) : Math.ceil(tableData.length / pageSize);
 
     return (
-      <FooterContainer>
+      <PaginationBarContainer>
         <Grid item xs={2}>
           <FormControl fullWidth variant="standard">
             <Select
+              style={{
+                width: '99.3%',
+                backgroundColor: '#a36f87',
+                color: 'white',
+                fontWeight: 'bolder'
+              }}
               labelId="page-size-label"
               id="page-size-select"
               value={pageSize + ''}
@@ -329,18 +260,21 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
         <Grid item xs={10}>
           <Pagination
-            style={{ width: '100%', backgroundColor: '#734e5f', color: 'white' }}
+            style={{ width: '99.3%', backgroundColor: '#a36f87', fontWeight: 'bolder' }}
             page={page}
             count={count}
             onChange={this.handlePageChange}
             defaultPage={1}
+            showFirstButton
+            showLastButton
             variant={'outlined'}
-            size={'large'}
+            size={'medium'}
           />
         </Grid>
-      </FooterContainer>
+      </PaginationBarContainer>
     );
   };
+
   render() {
     const { headers, dynamic, data } = this.props;
     const { tableData, page, pageSize } = this.state;
@@ -349,7 +283,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
     this.renderHeaderCells = this.renderHeaderCells.bind(this);
     this.renderRow = this.renderRow.bind(this);
-    this.renderFooter = this.renderFooter.bind(this);
+    this.renderPaginationBar = this.renderPaginationBar.bind(this);
 
     const header = (
       <Tr>
@@ -362,9 +296,9 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     const body = dynamic
       ? data.map(this.renderRow)
       : tableData.slice(startIndex, page * pageSize).map(this.renderRow);
-    const footer = this.renderFooter();
+    const footer = this.renderPaginationBar();
     return (
-      <>
+      <div style={{ paddingLeft: '3vh' }}>
         {footer}
         <DataGridContainer>
           <Table>
@@ -372,7 +306,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
             <tbody>{body}</tbody>
           </Table>
         </DataGridContainer>
-      </>
+      </div>
     );
   }
 }

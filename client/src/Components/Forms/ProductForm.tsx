@@ -41,13 +41,12 @@ function ProductForm({ addProductRequest }: ReturnType<typeof mapDispatchToProps
     <Box
       component="form"
       sx={{
-        '& > :not(style)': { m: 1, width: '50ch' }
+        '& > :not(style)': { m: 'auto', width: '40vw' }
       }}
-      style={{ width: '50vw' }}
       autoComplete="off"
       onSubmit={onSubmit}
     >
-      <Grid container spacing={2}>
+      <Grid container spacing={2} alignSelf="center">
         <Grid item xs={12}>
           <Typography variant={'h5'} align="center">
             Create a product entry
