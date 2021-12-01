@@ -11,6 +11,26 @@ const getProducts = (request: Request, response: Response) => {
 	});
 };
 
+/**
+ * This controller/query uses the limit/offset method for pagination
+ * @param request (the limit offset sortField and order are passed on ass parameters)
+ * @param response
+ */
+const getProductsPage = (request: Request, response: Response) => {
+	const { limit, page, sortField, order } = request.params;
+	const wantedIndex = parseInt(limit) * (parseInt(page) - 1);
+	pool.query(
+		`SELECT * FROM products ORDER BY ${sortField} ${order} OFFSET ${wantedIndex} LIMIT ${limit}`,
+		(error, results) => {
+			console.log(results);
+			if (error) {
+				throw error;
+			}
+			response.status(200).json(results.rows);
+		}
+	);
+};
+
 const getProductById = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 
@@ -67,6 +87,7 @@ const deleteProduct = (request: Request, response: Response) => {
 
 export default {
 	getProducts,
+	getProductsPage,
 	getProductById,
 	createProduct,
 	updateProduct,

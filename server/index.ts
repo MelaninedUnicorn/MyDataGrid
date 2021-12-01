@@ -50,6 +50,8 @@ app.get("/", (request, response) => {
 });
 app.get("/getCsrfToken", CsurfController.getCsrfToken);
 
+app.get("/products-page/:limit/:page/:sortField/:order",ProductsController.getProductsPage);
+
 app.get("/products", ProductsController.getProducts);
 
 app.get("/products/:id", ProductsController.getProductById);
