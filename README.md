@@ -38,6 +38,7 @@ What I implemented
 - [React.js](https://reactjs.org/)
 - [Express](https://expressjs.com/)
 - [PostGres](https://node-postgres.com/)
+- [Heroku](https://www.heroku.com/)
 - [Redux](https://redux.js.org/)
 - [Material](https://mui.com/)
 
