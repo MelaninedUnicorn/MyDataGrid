@@ -36,8 +36,7 @@
     "build": "react-scripts build",
     "lint": "eslint \"**/*.{ts,tsx}\"",
     "lint:fix": "eslint --fix",
-    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc",
-    "prepare": "husky install"
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,md,json}' --config ./.prettierrc"
   },
   "eslintConfig": {
     "extends": [
@@ -68,7 +67,6 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.27.1",
-    "husky": "^7.0.4",
     "prettier": "^2.5.0"
   },
   "lint-staged": {
