@@ -24,7 +24,7 @@ interface DataGridProps {
   // Dynamic data grid props
   dynamic?: boolean;
   currentPage?: number;
-  currentSortField: string;
+  currentSortField?: string;
   order?: 'ASC' | 'DESC';
   total?: number;
   // eslint-disable-next-line no-unused-vars
@@ -277,7 +277,6 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
   renderFooter = () => {
     const { dynamic, total } = this.props;
     const { tableData, page, pageSize } = this.state;
-    console.log(total);
     const count =
       dynamic && total ? Math.ceil(total / pageSize) : Math.ceil(tableData.length / pageSize);
 

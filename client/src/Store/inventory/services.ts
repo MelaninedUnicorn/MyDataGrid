@@ -64,7 +64,6 @@ const getProductsPage = async ({ limit, page, sortField, order }: GetPage): Prom
   if (response.status !== 200) {
     throw new Error(body.message);
   } else {
-    console.log(body);
     return body;
   }
 };
@@ -142,11 +141,10 @@ const addProduct = async (product: {
     body: JSON.stringify(product)
   });
   const body = await response.json();
-  console.log('body', body);
+
   if (response.status !== 201) {
     throw new Error(body.message);
   } else {
-    console.log(body);
     return;
   }
 };

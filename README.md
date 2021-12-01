@@ -44,6 +44,7 @@ To get a local copy up and running follow these simple example steps.
   npm install npm@latest -g
   ```
 - Typescript
+  If you do not want to install typescript globally, install it as a dev dependency
   ```sh
    npm install typescript --save-dev
   ```
@@ -74,6 +75,7 @@ To get a local copy up and running follow these simple example steps.
 - [x] Light backend that serves the inventory (implemented with express)
 - [x] Product "api" that allows the implementation of different types of items to be added to an inventory
 - [x] The data grid component accepts an array of objects and displays them in a sortable table.
+- [x] The data grid component can be used dynamically or statically.
 - [x] If no header prop is passed on,the object keys of the first entry are used as column headers.
 - [x] A row can be deleted (on the local state if no delete entry function is not passed as a prop)
 - [x] Columns adapt to the size of the content (the first column is fixed for better readability)

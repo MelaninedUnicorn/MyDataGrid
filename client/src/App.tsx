@@ -4,8 +4,9 @@ import * as React from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import MyProductDataGrid from './Page/MyProductDataGrid';
+import MyProductDataGrid from './Sections/MyProductDataGrid';
 import ProductForm from './Components/Forms/ProductForm';
+import StaticDataGrid from './Sections/StaticDataGrid';
 
 function App() {
   return (
@@ -23,6 +24,17 @@ function App() {
       </Grid>
       <Grid item>
         <ProductForm />
+      </Grid>
+      <Grid item xs={10}>
+        <Typography variant={'h4'} align="center">
+          Static Use
+        </Typography>
+        <Typography align="center">
+          Here is an example of the data grid component being used statically
+        </Typography>
+      </Grid>
+      <Grid item>
+        <StaticDataGrid />
       </Grid>
     </Grid>
   );
