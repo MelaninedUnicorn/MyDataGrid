@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import pool from "../Database/db.config";
+import query from "../Database/db.config";
 
 /**
  * This controller gets all the entries from the products table
@@ -9,7 +9,7 @@ import pool from "../Database/db.config";
  * @param response
  */
 const getProducts = (request: Request, response: Response) => {
-	pool.query("SELECT * FROM products ORDER BY id ASC", (error, results) => {
+	query("SELECT * FROM products ORDER BY id ASC", [], (error, results) => {
 		if (error) {
 			throw error;
 		}
@@ -36,14 +36,15 @@ const getProductsPage = (request: Request, response: Response) => {
 
 	const wantedIndex = parseInt(limit) * (parseInt(page) - 1);
 
-	pool.query(
+	query(
 		`SELECT * FROM products ORDER BY ${sortField} ${order} OFFSET ${wantedIndex} LIMIT ${limit}`,
+		[],
 		(error, results) => {
 			if (error) {
 				throw error;
 			}
 			pageDetails.products = results.rows;
-			pool.query("SELECT count(*) FROM products", (error, results) => {
+			query("SELECT count(*) FROM products", [], (error, results) => {
 				pageDetails.total = results.rows[0].count;
 				if (error) {
 					throw error;
@@ -62,7 +63,7 @@ const getProductsPage = (request: Request, response: Response) => {
 const getProductById = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 
-	pool.query("SELECT * FROM products WHERE id = $1", [id], (error, results) => {
+	query("SELECT * FROM products WHERE id = $1", [id], (error, results) => {
 		if (error) {
 			throw error;
 		}
@@ -78,7 +79,7 @@ const getProductById = (request: Request, response: Response) => {
 const createProduct = (request: Request, response: Response) => {
 	const { title, description, price, category } = request.body;
 
-	pool.query(
+	query(
 		"INSERT INTO products (title,description,price,category) VALUES ($1, $2,$3,$4)",
 		[title, description, price, category],
 		(error, results) => {
@@ -100,7 +101,7 @@ const updateProduct = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 	const { title, description, price, category } = request.body;
 
-	pool.query(
+	query(
 		"UPDATE products SET title = $1, description = $2, price = $3, category = $4 WHERE id = $5",
 		[title, description, price, category, id],
 		(error, _results) => {
@@ -119,7 +120,7 @@ const updateProduct = (request: Request, response: Response) => {
 const deleteProduct = (request: Request, response: Response) => {
 	const id = parseInt(request.params.id);
 
-	pool.query("DELETE FROM products WHERE id = $1", [id], (error, results) => {
+	query("DELETE FROM products WHERE id = $1", [id], (error, results) => {
 		if (error) {
 			throw error;
 		}
