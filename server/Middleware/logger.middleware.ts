@@ -5,9 +5,9 @@ const loggerMiddleware = (req: Request, res: Response, next: NextFunction) => {
 		"Request logged:",
 		req.method,
 		req.path,
-		"body",
+		"body=",
 		req.body,
-		"params",
+		"params=",
 		req.params
 	);
 	next();
