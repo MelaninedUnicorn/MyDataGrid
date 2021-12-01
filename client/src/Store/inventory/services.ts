@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
-import { Product } from './types';
+import { GetPage, Product } from './types';
+
 import cookie from 'react-cookies';
+
 const domainUrl = 'http://localhost:5000';
 
 /**
@@ -40,6 +42,29 @@ const getProducts = async (): Promise<Product[]> => {
   if (response.status !== 200) {
     throw new Error(body.message);
   } else {
+    return body;
+  }
+};
+
+const getProductsPage = async ({ limit, page, sortField, order }: GetPage): Promise<Product[]> => {
+  const response = await fetch(
+    `${domainUrl}/products-page/${limit}/${page}/${sortField}/${order}`,
+    {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'xsrf-token': cookie.load('csrfToken')
+      },
+      credentials: 'include',
+      mode: 'cors'
+    }
+  );
+  const body = await response.json();
+  if (response.status !== 200) {
+    throw new Error(body.message);
+  } else {
+    console.log(body);
     return body;
   }
 };
@@ -125,4 +150,4 @@ const addProduct = async (product: {
     return;
   }
 };
-export { getProducts, addProduct, deleteProduct, updateProduct, setCsrfToken };
+export { getProducts, addProduct, deleteProduct, updateProduct, setCsrfToken, getProductsPage };

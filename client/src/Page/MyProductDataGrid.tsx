@@ -1,4 +1,4 @@
-import { InventoryState, Product } from '../Store/inventory/types';
+import { GetPage, InventoryState, Product } from '../Store/inventory/types';
 import React, { useEffect } from 'react';
 import { deleteProductRequest, fetchInventoryRequest } from '../Store/inventory/action';
 
@@ -13,13 +13,17 @@ import { setCsrfToken } from '../Store/inventory/services';
 const mapStateToProps = ({ inventory }: ApplicationState) => ({
   loading: inventory.loading,
   errors: inventory.error,
-  data: inventory.data
+  currentPage: inventory.currentPage,
+  order: inventory.order,
+  data: inventory.data,
+  total: inventory.total,
+  sortField: inventory.sortField
 });
 
 const mapDispatchToProps = (dispatch: ThunkDispatch<any, any, AnyAction>) => {
   return {
-    fetchInventoryRequest: () => {
-      dispatch(fetchInventoryRequest());
+    fetchInventoryRequest: (pageDetails: GetPage) => {
+      dispatch(fetchInventoryRequest(pageDetails));
     },
     deleteProductRequest: (id: string) => {
       dispatch(deleteProductRequest(id));
@@ -32,6 +36,10 @@ type MyProductDataGridProps = InventoryState & ReturnType<typeof mapDispatchToPr
 function MyProductDataGrid({
   loading,
   data,
+  total,
+  currentPage,
+  sortField,
+  order,
   fetchInventoryRequest,
   deleteProductRequest
 }: MyProductDataGridProps) {
@@ -40,8 +48,8 @@ function MyProductDataGrid({
   }, [setCsrfToken]);
 
   useEffect(() => {
-    fetchInventoryRequest();
-  }, [fetchInventoryRequest, deleteProductRequest]);
+    fetchInventoryRequest({ limit: 10, page: 1, sortField: 'id', order: 'ASC' });
+  }, [fetchInventoryRequest]);
 
   const headers = [
     { field: 'id', headerName: 'ID' },
@@ -54,10 +62,24 @@ function MyProductDataGrid({
     deleteProductRequest(product.id);
   };
 
+  const getPage = ({ limit, page, sortField, order }: GetPage) => {
+    fetchInventoryRequest({ limit, page, sortField, order });
+  };
+
   return loading === true ? (
     <Loading />
   ) : (
-    <DataGrid data={data} headers={headers} deleteEntry={deleteProduct} />
+    <DataGrid
+      dynamic
+      total={total}
+      data={data}
+      order={order as 'ASC' | 'DESC'}
+      currentSortField={sortField}
+      currentPage={currentPage}
+      headers={headers}
+      deleteEntry={deleteProduct}
+      getPage={getPage}
+    />
   );
 }
 

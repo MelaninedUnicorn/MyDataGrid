@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-import pool from "../Database";
+import pool from "../Database/db.config";
 
 const getProducts = (request: Request, response: Response) => {
 	pool.query("SELECT * FROM products ORDER BY id ASC", (error, results) => {
@@ -18,15 +18,31 @@ const getProducts = (request: Request, response: Response) => {
  */
 const getProductsPage = (request: Request, response: Response) => {
 	const { limit, page, sortField, order } = request.params;
+
+	let pageDetails = {
+		currentPage: page,
+		order,
+		sortField,
+		products: [{}],
+		total: 0,
+	};
+
 	const wantedIndex = parseInt(limit) * (parseInt(page) - 1);
+
 	pool.query(
 		`SELECT * FROM products ORDER BY ${sortField} ${order} OFFSET ${wantedIndex} LIMIT ${limit}`,
 		(error, results) => {
-			console.log(results);
 			if (error) {
 				throw error;
 			}
-			response.status(200).json(results.rows);
+			pageDetails.products = results.rows;
+			pool.query("SELECT count(*) FROM products", (error, results) => {
+				pageDetails.total = results.rows[0].count;
+				if (error) {
+					throw error;
+				}
+				response.status(200).json(pageDetails);
+			});
 		}
 	);
 };

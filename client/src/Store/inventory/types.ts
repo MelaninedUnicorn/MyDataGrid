@@ -7,9 +7,20 @@ export interface Product {
   category: string;
 }
 
+export type GetPage = {
+  limit: number;
+  page: number;
+  sortField: string;
+  order: 'ASC' | 'DESC';
+};
+
 export type InventoryState = {
-  readonly data: Product[];
   readonly loading: boolean;
+  readonly data: Product[];
+  readonly currentPage: number;
+  readonly order: 'ASC' | 'DESC';
+  readonly sortField: string;
+  readonly total: number;
   readonly error?: string;
 };
 

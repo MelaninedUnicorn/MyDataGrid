@@ -2,6 +2,8 @@ import { IconButton, Pagination, Tooltip } from '@mui/material';
 import React, { Component } from 'react';
 
 import DeleteIcon from '@mui/icons-material/Delete';
+import { GetPage } from '../../Store/inventory/types';
+import Swal from 'sweetalert2';
 import sorter from '../../Utils/sorter.utils';
 import styled from 'styled-components';
 
@@ -19,8 +21,16 @@ interface DataGridProps {
   title?: string;
   initialPageSize?: number;
   data: object[];
+  // Dynamic data grid props
+  dynamic?: boolean;
+  currentPage?: number;
+  currentSortField: string;
+  order?: 'ASC' | 'DESC';
+  total?: number;
   // eslint-disable-next-line no-unused-vars
   deleteEntry?: (dataEntry: object) => void;
+  // eslint-disable-next-line no-unused-vars
+  getPage?: (pageDetails: GetPage) => void;
 }
 
 interface DataGridState {
@@ -28,7 +38,7 @@ interface DataGridState {
   page: number;
   pageSize: number;
   tableData: object[];
-  currentOrder: number;
+  currentOrder: 'ASC' | 'DESC';
 }
 const Table = styled.table`
   border-spacing: 0px;
@@ -110,32 +120,74 @@ const FooterContainer = styled.div`
 export default class DataGrid extends Component<DataGridProps, DataGridState> {
   constructor(props: DataGridProps) {
     super(props);
-    const { initialPageSize, data } = props;
+    const { initialPageSize = 10, data, headers, currentPage = 1, dynamic } = props;
     this.state = {
-      sortedField: '',
-      currentOrder: 1,
-      page: 1,
-      pageSize: initialPageSize ? initialPageSize : 10,
+      sortedField: headers ? headers[0].field : this.getHeadersFromData()[0].field,
+      currentOrder: 'ASC',
+      page: dynamic ? currentPage : 1,
+      pageSize: initialPageSize,
       tableData: data
     };
   }
-
+  /**
+   * The sort function first checks if the component is being used "dynamically"
+   * if so it checks if a getPage function has been passed if not, an error message shows when the user tries to sort
+   * @param field
+   */
   sort = (field: string) => {
-    const { tableData, sortedField } = this.state;
-    const { data } = this.props;
-
-    const newData =
-      field === sortedField
-        ? tableData.reverse()
-        : data.sort((a: any, b: any) => sorter(a[field], b[field]));
-    this.setState({
-      sortedField: field,
-      tableData: newData,
-      page: 1
-    });
+    const { tableData, sortedField, page, pageSize } = this.state;
+    const { data, dynamic, getPage, currentSortField, order } = this.props;
+    if (dynamic) {
+      let newOrder;
+      if (field === currentSortField) {
+        newOrder = order === 'DESC' ? 'ASC' : 'DESC';
+      } else {
+        newOrder = 'ASC';
+      }
+      getPage
+        ? getPage({
+            limit: pageSize,
+            page,
+            sortField: field,
+            order: newOrder as 'ASC' | 'DESC'
+          })
+        : Swal.fire(
+            'Error',
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
+    } else {
+      const newData =
+        field === sortedField
+          ? tableData.reverse()
+          : data.sort((a: any, b: any) => sorter(a[field], b[field]));
+      this.setState({
+        sortedField: field,
+        tableData: newData,
+        page: 1,
+        currentOrder: field === sortedField ? 'DESC' : 'ASC'
+      });
+    }
   };
   handlePageChange = (event: React.ChangeEvent<unknown>, newPage: number) => {
-    this.setState({ page: newPage });
+    const { currentOrder, sortedField, pageSize } = this.state;
+    const { dynamic, getPage } = this.props;
+    if (dynamic) {
+      getPage
+        ? getPage({
+            limit: pageSize,
+            page: newPage,
+            sortField: sortedField,
+            order: currentOrder
+          })
+        : Swal.fire(
+            'Error',
+            'The "getPage" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
+    } else {
+      this.setState({ page: newPage });
+    }
   };
 
   getHeadersFromData = (): Header[] => {
@@ -148,6 +200,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
     return headers;
   };
+
   renderHeaderCells = (_cell: Header, cellIndex: number) => {
     const notSortable = _cell.sortable === false;
 
@@ -205,10 +258,16 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
 
   deleteRow = (dataEntry: object) => {
     const { tableData } = this.state;
-    const { deleteEntry } = this.props;
+    const { deleteEntry, dynamic } = this.props;
 
-    if (deleteEntry) {
-      deleteEntry(dataEntry);
+    if (dynamic) {
+      deleteEntry
+        ? deleteEntry(dataEntry)
+        : Swal.fire(
+            'Error',
+            'The "deleteEntry" props is undefined. Please set it if you want to use this component dynamically.',
+            'error'
+          );
     } else {
       this.setState({
         tableData: tableData.filter((entry) => entry !== dataEntry)
@@ -216,8 +275,11 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     }
   };
   renderFooter = () => {
+    const { dynamic, total } = this.props;
     const { tableData, page, pageSize } = this.state;
-    const count = Math.ceil(tableData.length / pageSize);
+    console.log(total);
+    const count =
+      dynamic && total ? Math.ceil(total / pageSize) : Math.ceil(tableData.length / pageSize);
 
     return (
       <Pagination
@@ -231,7 +293,7 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
     );
   };
   render() {
-    const { headers } = this.props;
+    const { headers, dynamic, data } = this.props;
     const { tableData, page, pageSize } = this.state;
 
     const startIndex = (page - 1) * pageSize;
@@ -248,7 +310,9 @@ export default class DataGrid extends Component<DataGridProps, DataGridState> {
         <Th>Action</Th>
       </Tr>
     );
-    const body = tableData.slice(startIndex, page * pageSize).map(this.renderRow);
+    const body = dynamic
+      ? data.map(this.renderRow)
+      : tableData.slice(startIndex, page * pageSize).map(this.renderRow);
     const footer = this.renderFooter();
     return (
       <>

@@ -1,19 +1,19 @@
 import { Action, ActionCreator, Dispatch } from 'redux';
-import { InventoryActionTypes, Product } from './types';
-import { addProduct, deleteProduct, getProducts, updateProduct } from './services';
+import { GetPage, InventoryActionTypes, Product } from './types';
+import { addProduct, deleteProduct, getProductsPage, updateProduct } from './services';
 
 import { ApplicationState } from '../index';
 import { ThunkAction } from 'redux-thunk';
 
 export type AppThunk = ActionCreator<ThunkAction<void, ApplicationState, null, Action<object>>>;
 
-export const fetchInventoryRequest: AppThunk = () => {
+export const fetchInventoryRequest: AppThunk = (fetchDetails: GetPage) => {
   return (dispatch: Dispatch): Action | undefined => {
     try {
       dispatch({
         type: InventoryActionTypes.GET_INVENTORY_REQUEST
       });
-      getProducts().then((response) =>
+      getProductsPage(fetchDetails).then((response) =>
         dispatch({
           type: InventoryActionTypes.GET_INVENTORY_SUCCESS,
           payload: response

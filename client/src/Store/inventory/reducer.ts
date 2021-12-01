@@ -5,7 +5,11 @@ import { Reducer } from 'redux';
 const init: InventoryState = {
   data: [],
   error: undefined,
-  loading: false
+  loading: false,
+  order: 'ASC',
+  sortField: 'id',
+  currentPage: 1,
+  total: 0
 };
 
 const reducer: Reducer<InventoryState> = (state = init, action) => {
@@ -17,10 +21,15 @@ const reducer: Reducer<InventoryState> = (state = init, action) => {
       return { ...state, loading: true };
     }
     case InventoryActionTypes.GET_INVENTORY_SUCCESS: {
+      const { products, currentPage, total, order, sortField } = action.payload;
       return {
         ...state,
         loading: false,
-        data: action.payload
+        data: products,
+        currentPage: parseInt(currentPage),
+        sortField,
+        order,
+        total: parseInt(total)
       };
     }
     case InventoryActionTypes.DELETE_PRODUCT_SUCCESS ||
