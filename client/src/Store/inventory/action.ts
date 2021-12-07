@@ -13,12 +13,19 @@ export const fetchInventoryRequest: AppThunk = (fetchDetails: GetPage) => {
       dispatch({
         type: InventoryActionTypes.GET_INVENTORY_REQUEST
       });
-      getProductsPage(fetchDetails).then((response) =>
-        dispatch({
-          type: InventoryActionTypes.GET_INVENTORY_SUCCESS,
-          payload: response
-        })
-      );
+      getProductsPage(fetchDetails)
+        .then((response) =>
+          dispatch({
+            type: InventoryActionTypes.GET_INVENTORY_SUCCESS,
+            payload: response
+          })
+        )
+        .catch((e) =>
+          dispatch({
+            type: InventoryActionTypes.GET_INVENTORY_FAILURE,
+            payload: e.message
+          })
+        );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.GET_INVENTORY_FAILURE,
@@ -34,11 +41,18 @@ export const deleteProductRequest: AppThunk = (id: string) => {
       dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_REQUEST
       });
-      deleteProduct(id).then(() => {
-        dispatch({
-          type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
-        });
-      });
+      deleteProduct(id)
+        .then(() => {
+          dispatch({
+            type: InventoryActionTypes.DELETE_PRODUCT_SUCCESS
+          });
+        })
+        .catch((e) =>
+          dispatch({
+            type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
+            payload: e.message
+          })
+        );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.DELETE_PRODUCT_FAILURE,
@@ -54,11 +68,18 @@ export const addProductRequest: AppThunk = (product: Product) => {
       dispatch({
         type: InventoryActionTypes.ADD_PRODUCT_REQUEST
       });
-      addProduct(product).then(() => {
-        dispatch({
-          type: InventoryActionTypes.ADD_PRODUCT_SUCCESS
-        });
-      });
+      addProduct(product)
+        .then(() => {
+          dispatch({
+            type: InventoryActionTypes.ADD_PRODUCT_SUCCESS
+          });
+        })
+        .catch((e) =>
+          dispatch({
+            type: InventoryActionTypes.ADD_PRODUCT_FAILURE,
+            payload: e.message
+          })
+        );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.ADD_PRODUCT_FAILURE,
@@ -74,11 +95,18 @@ export const updateProductRequest: AppThunk = (product: Product) => {
       dispatch({
         type: InventoryActionTypes.UPDATE_PRODUCT_REQUEST
       });
-      updateProduct(product).then(() =>
-        dispatch({
-          type: InventoryActionTypes.UPDATE_PRODUCT_SUCCESS
-        })
-      );
+      updateProduct(product)
+        .then(() =>
+          dispatch({
+            type: InventoryActionTypes.UPDATE_PRODUCT_SUCCESS
+          })
+        )
+        .catch((e) =>
+          dispatch({
+            type: InventoryActionTypes.UPDATE_PRODUCT_FAILURE,
+            payload: e.message
+          })
+        );
     } catch (e: any) {
       return dispatch({
         type: InventoryActionTypes.UPDATE_PRODUCT_FAILURE,

@@ -6,13 +6,14 @@ import { AnyAction } from 'redux';
 import { ApplicationState } from '../Store';
 import DataGrid from '../Components/DataGrid/DataGrid';
 import Loading from '../Components/Loading/Loading';
+import Swal from 'sweetalert2';
 import { ThunkDispatch } from 'redux-thunk';
 import { connect } from 'react-redux';
 import { setCsrfToken } from '../Store/inventory/services';
 
 const mapStateToProps = ({ inventory }: ApplicationState) => ({
   loading: inventory.loading,
-  errors: inventory.error,
+  error: inventory.error,
   limit: inventory.limit,
   currentPage: inventory.currentPage,
   order: inventory.order,
@@ -42,6 +43,7 @@ function MyProductDataGrid({
   limit,
   sortField,
   order,
+  error,
   fetchInventoryRequest,
   deleteProductRequest
 }: MyProductDataGridProps) {
@@ -52,6 +54,11 @@ function MyProductDataGrid({
   useEffect(() => {
     fetchInventoryRequest({ limit: 10, page: 1, sortField: 'id', order: 'ASC' });
   }, [fetchInventoryRequest]);
+  useEffect(() => {
+    if (error) {
+      Swal.fire('Oops!', error, 'error');
+    }
+  });
 
   const headers = [
     { field: 'id', headerName: 'ID' },
