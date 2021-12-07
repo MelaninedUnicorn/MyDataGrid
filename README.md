@@ -66,7 +66,7 @@ To get a local copy up and running follow these simple example steps.
 
 1. Clone the repo
    ```sh
-   git clone git@github.com:MelaninedUnicorn/MyDataGrid.git
+   git clone https://github.com/MelaninedUnicorn/MyDataGrid.git
    ```
 2. Enter the setup command
    ```sh
