@@ -9,7 +9,7 @@ import helmet from "helmet";
 import loggerMiddleware from "./Middleware/logger.middleware";
 import productsRoutes from "./Routes/products.routes";
 const app = express();
-const port = 5000;
+const port = 5000; 
 
 /**
  * MIDDLEWARES
