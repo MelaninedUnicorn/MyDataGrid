@@ -3,13 +3,10 @@ import { Pool, PoolClient } from "pg";
 import dotenv from "dotenv";
 
 dotenv.config();
+const connectionString = process.env.POSTGRES_URI;
 
 const pool = new Pool({
-	user: process.env.POSTGRES_USER,
-	host: process.env.POSTGRES_HOST,
-	database: process.env.POSTGRES_DB,
-	password: process.env.POSTGRES_PASSWORD,
-	port: 5432,
+	connectionString,
 	ssl: {
 		rejectUnauthorized: false,
 	},
@@ -34,8 +31,8 @@ export const query = (
 		console.log("executed query", {
 			text,
 			duration,
-			rows: res && res.rowCount ,
-			error: err ? err.message : "none"
+			rows: res && res.rowCount,
+			error: err ? err.message : "none",
 		});
 		callback(err, res);
 	});
