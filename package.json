@@ -10,6 +10,6 @@
   "author": "Mugisha J. Kakou",
   "license": "ISC",
   "dependencies": {
-    "concurrently": "^6.4.0"
+    "concurrently": "^6.5.1"
   }
 }
